@@ -10,6 +10,6 @@ export default defineConfig({
   integrations: [tailwind()],
   output: 'server',
   adapter: vercel({
-    runtime: 'nodejs16.x',
+    runtime: 'nodejs18.x',
   }),
 });
