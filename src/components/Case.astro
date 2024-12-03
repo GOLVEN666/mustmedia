@@ -1,0 +1,28 @@
+---
+import Container from "./Container.astro"
+import Topic from "./Topic.astro"
+import { caseStudies } from '../data/caseStudies';
+
+// Get the first 3 case studies for display
+const featuredCases = caseStudies.slice(0, 3);
+---
+<Container>
+<div class="relative flex flex-col items-center md:flex-row" id="projects">
+    <Topic title="Case Studies" description="Explore Real-Life Examples of Our Proven Digital Marketing Success through Our Case Studies" />
+</div>
+
+<div class="w-full p-12 bg-zinc-900 rounded-[45px] justify-start items-start gap-16 inline-flex text-white">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-2 divide-x-0 md:divide-x divide-y md:divide-y-0">
+        {featuredCases.map(study => (
+            <div class="flex-col items-start gap-5 inline-flex px-2 md:px-6 py-6 md:py-2">
+                <div class="w-full text-lg font-normal">{study.description}</div>
+                <a href={`/case-studies/${study.id}`} class="justify-start items-center gap-[15px] inline-flex hover:text-zime-44 transition-colors">
+                    <div class="text-zime-44 text-xl font-normal leading-7">En savoir plus</div>
+                    <img src="/services/agc.svg" alt="arrow">
+                </a>
+            </div>
+        ))}
+    </div>
+</div>
+
+</Container>

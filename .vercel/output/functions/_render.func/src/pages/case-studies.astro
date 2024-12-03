@@ -1,0 +1,158 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Container from "../components/Container.astro";
+import Topic from "../components/Topic.astro";
+import { caseStudies } from '../data/caseStudies';
+
+// Extract unique categories from case studies
+const categories = ['All', ...new Set(caseStudies.map(study => study.category))];
+---
+
+<Layout title="Case Studies | MustMedia">
+    <Container>
+        <div class="py-24">
+            <Topic 
+                title="Nos Réalisations" 
+                description="Découvrez comment nous aidons nos clients à atteindre leurs objectifs"
+            />
+
+            <!-- Filter Section -->
+            <div class="flex justify-center gap-4 mt-12 mb-16">
+                {categories.map(category => (
+                    <button 
+                        class="filter-btn px-6 py-2 rounded-full border-2 border-zinc-200 hover:border-zime-44 hover:bg-zime-44 hover:text-white transition-all"
+                        data-filter={category}
+                        data-active={category === 'All' ? 'true' : 'false'}
+                    >
+                        {category}
+                    </button>
+                ))}
+            </div>
+
+            <!-- Case Studies Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {caseStudies.map(study => (
+                    <div class="case-study-item bg-white rounded-3xl border border-gray-100 shadow-card overflow-hidden" 
+                         data-category={study.category}
+                         data-visible="true">
+                        <div class="p-8">
+                            <span class="inline-block px-4 py-1 bg-zime-44 text-white rounded-full text-sm mb-4">
+                                {study.category}
+                            </span>
+                            
+                            <h3 class="text-2xl font-semibold mb-4">{study.title}</h3>
+                            
+                            <p class="text-zinc-600 mb-6">{study.description}</p>
+                            
+                            <!-- Metrics with Trend Indicators -->
+                            <div class="grid grid-cols-3 gap-4 mb-6">
+                                {study.metrics.map(metric => (
+                                    <div class="text-center">
+                                        <div class="flex items-center justify-center gap-1">
+                                            <div class="text-2xl font-bold text-zime-44">{metric.value}</div>
+                                            {metric.trend === 'up' && (
+                                                <svg class="w-4 h-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/>
+                                                </svg>
+                                            )}
+                                            {metric.trend === 'down' && (
+                                                <svg class="w-4 h-4 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+                                                </svg>
+                                            )}
+                                        </div>
+                                        <div class="text-sm text-zinc-500">{metric.label}</div>
+                                    </div>
+                                ))}
+                            </div>
+
+                            <!-- Growth Chart -->
+                            <div class="h-32 mb-6">
+                                <canvas class="growth-chart" 
+                                    data-revenue={JSON.stringify(study.monthlyData.map(d => d.revenue))}
+                                    data-months={JSON.stringify(study.monthlyData.map(d => d.month))}
+                                ></canvas>
+                            </div>
+                            
+                            <a href={`/case-studies/${study.id}`} class="inline-block w-full text-black hover:text-white bg-zime-44 hover:bg-black focus:ring-4 focus:ring-primary-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                                En savoir plus
+                            </a>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </div>
+    </Container>
+</Layout>
+
+<script>
+    function initializeFilters() {
+        const filterButtons = document.querySelectorAll<HTMLButtonElement>('.filter-btn');
+        const caseStudyItems = document.querySelectorAll<HTMLElement>('.case-study-item');
+
+        // Set initial state
+        const activeFilter = localStorage.getItem('activeFilter') || 'All';
+        filterButtons.forEach(btn => {
+            if (btn.getAttribute('data-filter') === activeFilter) {
+                btn.classList.add('active');
+                btn.setAttribute('data-active', 'true');
+            }
+        });
+
+        // Apply initial filtering
+        filterItems(activeFilter);
+
+        // Add click handlers
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const selectedCategory = button.getAttribute('data-filter') || 'All';
+                
+                // Update localStorage
+                localStorage.setItem('activeFilter', selectedCategory);
+
+                // Update UI
+                filterButtons.forEach(btn => {
+                    btn.classList.remove('active');
+                    btn.setAttribute('data-active', 'false');
+                });
+                button.classList.add('active');
+                button.setAttribute('data-active', 'true');
+
+                filterItems(selectedCategory);
+            });
+        });
+
+        function filterItems(category: string) {
+            caseStudyItems.forEach(item => {
+                const itemCategory = item.getAttribute('data-category');
+                if (category === 'All' || category === itemCategory) {
+                    item.style.display = 'block';
+                    item.setAttribute('data-visible', 'true');
+                } else {
+                    item.style.display = 'none';
+                    item.setAttribute('data-visible', 'false');
+                }
+            });
+        }
+    }
+
+    // Initialize on page load
+    initializeFilters();
+
+    // Re-initialize when navigating back
+    document.addEventListener('astro:after-swap', initializeFilters);
+</script>
+
+<style>
+    .filter-btn.active {
+        @apply bg-zime-44 text-white border-zime-44;
+    }
+    
+    .filter-btn[data-active="true"] {
+        @apply bg-zime-44 text-white border-zime-44;
+    }
+    
+    .case-study-item[data-visible="false"] {
+        display: none;
+    }
+</style> 
