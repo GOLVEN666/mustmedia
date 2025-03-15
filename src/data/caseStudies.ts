@@ -1,4 +1,36 @@
-export const caseStudies = [
+export interface Metric {
+    label: string;
+    value: string;
+    trend: "up" | "down";
+}
+
+export interface Testimonial {
+    quote: string;
+    author: string;
+    position: string;
+}
+
+export interface CaseStudy {
+    id: string;
+    title: string;
+    category: string;
+    description: string;
+    fullDescription: string;
+    metrics: Metric[];
+    tags: string[];
+    image: string;
+    date: string;
+    challenge?: string;
+    solution?: string;
+    testimonial?: Testimonial;
+    monthlyData?: Array<{
+        month: string;
+        revenue: number;
+        orders: number;
+    }>;
+}
+
+export const caseStudies: CaseStudy[] = [
     // Marketing des Réseaux Sociaux & Acquisition de Clients
     {
         id: "mourad",

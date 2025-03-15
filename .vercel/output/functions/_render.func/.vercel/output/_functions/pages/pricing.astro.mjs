@@ -1,7 +1,7 @@
 /* empty css                                 */
-import { c as createComponent, r as renderTemplate, b as renderComponent, m as maybeRenderHead } from '../chunks/astro/server_XPotyUtQ.mjs';
+import { c as createComponent, r as renderTemplate, a as renderComponent, m as maybeRenderHead } from '../chunks/astro/server_R8eDJY8f.mjs';
 import 'kleur/colors';
-import { $ as $$Container, a as $$Layout } from '../chunks/Layout_D58A5twf.mjs';
+import { $ as $$Container, a as $$Layout } from '../chunks/Layout_DhieiGja.mjs';
 /* empty css                                   */
 export { renderers } from '../renderers.mjs';
 
@@ -39,9 +39,9 @@ Développement Web
     "Visibilit\xE9 Virale",
     "Google Analytics"
   ].map((feature) => renderTemplate`<li class="flex items-center space-x-3" data-astro-cid-lmkygsfs> <svg class="flex-shrink-0 w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20" data-astro-cid-lmkygsfs> <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" data-astro-cid-lmkygsfs></path> </svg> <span data-astro-cid-lmkygsfs>${feature}</span> </li>`)} </ul> </div> <a href="#" class="mt-8 text-black hover:text-white bg-zime-44 hover:bg-black focus:ring-4 focus:ring-primary-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center" data-astro-cid-lmkygsfs>Get started</a> </div> </div> </div> </div> ` })} </main> ` })}  `;
-}, "C:/Users/AXH/Documents/my-site/zab-media/mustmedia/src/pages/pricing.astro", void 0);
+}, "C:/Users/AXH/Documents/must/mustmedia/src/pages/pricing.astro", void 0);
 
-const $$file = "C:/Users/AXH/Documents/my-site/zab-media/mustmedia/src/pages/pricing.astro";
+const $$file = "C:/Users/AXH/Documents/must/mustmedia/src/pages/pricing.astro";
 const $$url = "/pricing";
 
 const _page = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({

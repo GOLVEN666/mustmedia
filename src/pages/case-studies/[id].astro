@@ -2,6 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import Container from "../../components/Container.astro";
 import { caseStudies } from '../../data/caseStudies';
+import type { CaseStudy } from '../../data/caseStudies';
 
 export async function getStaticPaths() {
     return caseStudies.map(study => ({
@@ -83,7 +84,7 @@ if (!study) {
                         <div>
                             <h2 class="text-2xl font-bold mb-4 text-white">Le Défi</h2>
                             <div class="text-zinc-400 space-y-4">
-                                {study.challenge.split('\n').map(line => (
+                                {study.challenge.split('\n').map((line: string) => (
                                     <p>{line}</p>
                                 ))}
                             </div>
@@ -94,7 +95,7 @@ if (!study) {
                         <div>
                             <h2 class="text-2xl font-bold mb-4 text-white">Notre Solution</h2>
                             <div class="text-zinc-400 space-y-4">
-                                {study.solution.split('\n').map(line => (
+                                {study.solution.split('\n').map((line: string) => (
                                     <p>{line}</p>
                                 ))}
                             </div>
@@ -123,40 +124,37 @@ if (!study) {
     </div>
 </Layout>
 
-<script define:vars={{ study }}>
-    if (study.monthlyData) {
-        import Chart from 'chart.js/auto';
-        
-        // Get the canvas element
+<script is:inline define:vars={{ study }}>
+if (typeof window !== 'undefined' && study.monthlyData) {
+    // Load Chart.js from CDN
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/chart.js';
+    script.onload = function() {
         const ctx = document.getElementById('growthChart')?.getContext('2d');
-        
         if (ctx) {
-            // Use actual data from the study
-            const monthlyData = {
-                labels: study.monthlyData.map(d => d.month),
-                datasets: [
-                    {
-                        label: 'Revenue',
-                        data: study.monthlyData.map(d => d.revenue),
-                        borderColor: '#60A5FA',
-                        backgroundColor: 'rgba(96, 165, 250, 0.1)',
-                        fill: true,
-                        tension: 0.4
-                    },
-                    {
-                        label: 'Orders',
-                        data: study.monthlyData.map(d => d.orders),
-                        borderColor: '#34D399',
-                        backgroundColor: 'rgba(52, 211, 153, 0.1)',
-                        fill: true,
-                        tension: 0.4
-                    }
-                ]
-            };
-            
             new Chart(ctx, {
                 type: 'line',
-                data: monthlyData,
+                data: {
+                    labels: study.monthlyData.map(d => d.month),
+                    datasets: [
+                        {
+                            label: 'Revenue',
+                            data: study.monthlyData.map(d => d.revenue),
+                            borderColor: '#60A5FA',
+                            backgroundColor: 'rgba(96, 165, 250, 0.1)',
+                            fill: true,
+                            tension: 0.4
+                        },
+                        {
+                            label: 'Orders',
+                            data: study.monthlyData.map(d => d.orders),
+                            borderColor: '#34D399',
+                            backgroundColor: 'rgba(52, 211, 153, 0.1)',
+                            fill: true,
+                            tension: 0.4
+                        }
+                    ]
+                },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
@@ -190,5 +188,7 @@ if (!study) {
                 }
             });
         }
-    }
+    };
+    document.head.appendChild(script);
+}
 </script> 

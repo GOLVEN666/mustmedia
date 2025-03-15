@@ -1,10 +1,6 @@
 {
-  "functions": {
-    "api/**/*.js": {
-      "runtime": "nodejs18.x"
-    },
-    "api/_render.js": {
-      "runtime": "nodejs16.x"
-    }
-  }
+  "framework": "astro",
+  "buildCommand": "npm run build",
+  "devCommand": "npm run dev",
+  "installCommand": "npm install"
 } 

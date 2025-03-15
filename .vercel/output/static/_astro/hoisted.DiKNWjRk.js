@@ -1,1 +1,0 @@
-import"./hoisted.DPfZXjeO.js";const a=document.querySelectorAll(".tab-btn"),n=document.querySelectorAll(".pricing-content");a.forEach(t=>{t.addEventListener("click",()=>{a.forEach(c=>c.classList.remove("active")),n.forEach(c=>c.classList.remove("active")),t.classList.add("active");const s=t.dataset.tab,e=document.getElementById(`${s}-pricing`);e&&e.classList.add("active")})});

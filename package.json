@@ -27,5 +27,8 @@
     "api/**/*.js": {
       "runtime": "nodejs18"
     }
+  },
+  "devDependencies": {
+    "@types/aos": "^3.0.7"
   }
 }
