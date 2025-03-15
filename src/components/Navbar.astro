@@ -3,14 +3,14 @@ import Container from "./Container.astro"
 import { Astronav, MenuItems, MenuIcon } from "astro-navbar";
 
 const menuitems = [
-  { href: '/about', label: 'About us' },
+  { href: '/about', label: 'À Propos' },
   { href: '/#services', label: 'Services' },
-  { href: '/#projects', label: 'Use Cases' },
-  { href: '/pricing', label: 'Pricing' },
+  { href: '/#projects', label: 'Réalisations' },
+  { href: '/pricing', label: 'Tarifs' },
   { href: '/articles', label: 'Blog'},
 ];
 
-const navButton = { href: 'https://calendly.com/achraf-xchahid/30min', label: 'Request a quote' };
+const navButton = { href: 'https://calendly.com/achraf-xchahid/30min', label: 'Demander un devis' };
 ---
 
 <div class="mt-20">
@@ -30,11 +30,15 @@ const navButton = { href: 'https://calendly.com/achraf-xchahid/30min', label: 'R
         <ul class="font-medium flex flex-col p-4 lg:p-0 mt-4 border rounded-lg lg:flex-row lg:space-x-8 lg:mt-0 lg:border-0">
           {menuitems.map((item, index) => (
             <li>
-                <a href={item.href} class="block py-2 px-3 text-black rounded lg:bg-transparent lg:p-0">{item.label}</a>
+                <a href={item.href} class="block py-2 px-3 text-black rounded lg:bg-transparent lg:p-0 hover:text-zime-44 transition-colors duration-300">{item.label}</a>
             </li>
           ))}
           <div class="lg:hidden flex items-center justify-center mt-3 gap-4">
-              <a class="px-9 py-5 rounded-2xl border border-zinc-900 bg-white hover:bg-black text-black hover:text-white inline-flex" href={navButton.href} target="_blank"><h2 class="text-center text-xl font-normal leading-7">{navButton.label}</h2>
+              <a class="px-9 py-5 rounded-2xl border border-zinc-900 bg-white hover:bg-black text-black hover:text-white inline-flex items-center gap-2 transition-all duration-300" href={navButton.href} target="_blank">
+                <span class="text-xl font-normal leading-7">{navButton.label}</span>
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                </svg>
               </a>
           </div>
         </ul>
@@ -42,7 +46,11 @@ const navButton = { href: 'https://calendly.com/achraf-xchahid/30min', label: 'R
     </Astronav>
     <div>
       <div class="hidden lg:flex items-center gap-4">
-        <a class="px-9 py-5 rounded-2xl border border-zinc-900 bg-white hover:bg-black text-black hover:text-white inline-flex" href={navButton.href} target="_blank"><h2 class="text-center text-xl font-normal leading-7">{navButton.label}</h2>
+        <a class="px-9 py-5 rounded-2xl border border-zinc-900 bg-white hover:bg-black text-black hover:text-white inline-flex items-center gap-2 transition-all duration-300" href={navButton.href} target="_blank">
+            <span class="text-xl font-normal leading-7">{navButton.label}</span>
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+            </svg>
         </a>
       </div>
     </div>
@@ -50,3 +58,11 @@ const navButton = { href: 'https://calendly.com/achraf-xchahid/30min', label: 'R
 </Container>
 </nav>
 </div>
+
+<style>
+    nav {
+        backdrop-filter: blur(10px);
+        background: rgba(255, 255, 255, 0.9);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+</style>

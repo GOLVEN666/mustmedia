@@ -1,45 +1,104 @@
 ---
 import Container from "./Container.astro"
 import Topic from "./Topic.astro";
-import teamData from './Data/team.json';
-import Accordion from "./Accordion.astro";
 
+const teamMembers = [
+    {
+        name: "Naim Abdelghafour",
+        title: "Manager, Marketing, Expert en Ventes",
+        description: "Direction des décisions stratégiques, acquisition de clients et stratégie marketing. Expert en ventes, tunnels marketing et rédaction publicitaire.",
+        profile: "/team/c2.png",
+        link: "#"
+    },
+    {
+        name: "Achraf Chahid",
+        title: "Brand Strategist | Brand Innovation Engineer | UI/UX Designer",
+        description: "En tant que professionnel polyvalent, je combine expertise en stratégie de marque et compétences en développement technique pour créer des expériences numériques percutantes. Je dirige des projets de la conception à l'exécution, assurant des identités de marque cohérentes et des designs centrés sur l'utilisateur tout en gérant des équipes pluridisciplinaires. Mon objectif est de stimuler l'innovation et de fournir des résultats exceptionnels qui résonnent avec les audiences et atteignent les objectifs commerciaux.",
+        profile: "/team/achraf.png",
+        link: "#"
+    },
+    {
+        name: "Ibrahim Mobaker",
+        title: "Photographe",
+        description: "Amélioration des efforts marketing avec des visuels de haute qualité et des images de marque professionnelles.",
+        profile: "/team/ibrahim.jpg",
+        link: "#"
+    },
+    {
+        name: "Aymen",
+        title: "Développeur",
+        description: "Développeur expert construisant et optimisant des sites web qui génèrent des conversions et la croissance des entreprises.",
+        profile: "/team/aymen.jpg",
+        link: "#"
+    },
+    {
+        name: "Yasser",
+        title: "Développeur",
+        description: "Spécialisé dans la création de sites web et de solutions numériques haute performance.",
+        profile: "/team/yasser.jpg",
+        link: "#"
+    }
+];
+
+const processSteps = [
+    {
+        index: "01",
+        label: "Découverte & Stratégie",
+        content: "Nous commençons par comprendre vos objectifs commerciaux et votre public cible pour développer une stratégie numérique sur mesure."
+    },
+    {
+        index: "02",
+        label: "Création de Contenu",
+        content: "Notre équipe crée du contenu engageant et de haute qualité, incluant la photographie professionnelle et la rédaction persuasive."
+    },
+    {
+        index: "03",
+        label: "Mise en Œuvre",
+        content: "Nous exécutons votre stratégie marketing numérique sur plusieurs canaux, des médias sociaux à l'optimisation de sites web."
+    },
+    {
+        index: "04",
+        label: "Suivi & Optimisation",
+        content: "Surveillance continue et optimisation des campagnes pour assurer un ROI maximal et la croissance de l'entreprise."
+    }
+];
 ---
+
 <Container>
 <div class="relative flex flex-col items-center md:flex-row">
-    <Topic title="Process" description="Step-by-Step Guide to Achieving Your Business Goals"/>
+    <Topic title="Processus" description="Notre Approche Éprouvée pour le Succès en Marketing Digital"/>
 </div>
 
 <div class="my-6">
     <div class="space-y-10">
         {
-            teamData.process.map((item) => {
-                return (
-                <Accordion
-                    index= {item.index}
-                    title={item.label}
-                    description={item.content}
-                />
-                );
-            })
+            processSteps.map((item) => (
+                <div class="p-8 bg-white rounded-[45px] shadow-card border border-zinc-900">
+                    <div class="flex items-center gap-4 mb-4">
+                        <span class="text-3xl font-bold text-zime-44">{item.index}</span>
+                        <h3 class="text-2xl font-semibold">{item.label}</h3>
+                    </div>
+                    <p class="text-lg text-zinc-600">{item.content}</p>
+                </div>
+            ))
         }
     </div>
 </div>
 
 <div class="relative flex flex-col items-center md:flex-row pt-6">
-    <Topic title="Team" description="Meet the skilled and experienced team behind our successful digital marketing strategies"/>
+    <Topic title="Équipe" description="Rencontrez l'équipe qualifiée et expérimentée derrière nos stratégies de marketing digital réussies"/>
 </div>
 
 <div class="flex-row items-center py-5" id="team">
-    <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 gap-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
     {
-    teamData.team.map(({ title, description, name, link, profile} ) => (
+    teamMembers.map(({ title, description, name, link, profile} ) => (
     <div class="h-[331px] px-[35px] py-10 bg-white rounded-[45px] shadow-card border border-zinc-900 flex-col justify-start items-start gap-2.5 inline-flex text-black">
         <div class="flex-col justify-start items-start gap-7 flex">
             <div class="self-stretch justify-start items-start inline-flex">
                 <div class="grow shrink basis-0 justify-start items-center gap-8 flex">
                     <div class="h-[102.82px] left-0 top-0 relative">
-                        <img src={profile} alt={name}/>
+                        <img src={profile} alt={name} class="rounded-full"/>
                     </div>
                     <div class="flex-col justify-end items-start inline-flex">
                         <div class="text-lg font-normal">{title}</div>
@@ -57,10 +116,6 @@ import Accordion from "./Accordion.astro";
     ))
     }
     </div>
-</div>
-<div class="w-full justify-center md:justify-end items-center inline-flex">
-    <button class="px-8 py-5 bg-zinc-900 hover:bg-white rounded-2xl text-center text-white hover:text-black border text-xl font-normal leading-7">See all team
-    </button>
 </div>
 
 </Container>

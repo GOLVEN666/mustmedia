@@ -1,28 +1,303 @@
 ---
 import Container from "./Container.astro"
 import Topic from "./Topic.astro"
-import { caseStudies } from '../data/caseStudies';
+import { caseStudies, categories } from '../data/caseStudies';
 
-// Get the first 3 case studies for display
-const featuredCases = caseStudies.slice(0, 3);
+// Get all case studies
+const getAllCaseStudies = () => {
+    return caseStudies;
+};
 ---
+
 <Container>
-<div class="relative flex flex-col items-center md:flex-row" id="projects">
-    <Topic title="Case Studies" description="Explore Real-Life Examples of Our Proven Digital Marketing Success through Our Case Studies" />
-</div>
-
-<div class="w-full p-12 bg-zinc-900 rounded-[45px] justify-start items-start gap-16 inline-flex text-white">
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-2 divide-x-0 md:divide-x divide-y md:divide-y-0">
-        {featuredCases.map(study => (
-            <div class="flex-col items-start gap-5 inline-flex px-2 md:px-6 py-6 md:py-2">
-                <div class="w-full text-lg font-normal">{study.description}</div>
-                <a href={`/case-studies/${study.id}`} class="justify-start items-center gap-[15px] inline-flex hover:text-zime-44 transition-colors">
-                    <div class="text-zime-44 text-xl font-normal leading-7">En savoir plus</div>
-                    <img src="/services/agc.svg" alt="arrow">
-                </a>
-            </div>
-        ))}
+    <div class="relative flex flex-col items-center md:flex-row" id="projects">
+        <Topic 
+            title="Client Success Stories" 
+            description="Explore how we've helped businesses achieve remarkable growth and success"
+        />
     </div>
-</div>
 
+    <div class="mt-12">
+        <div class="flex flex-wrap justify-center gap-4 mb-12">
+            <button 
+                class="filter-btn active px-6 py-3 rounded-full text-lg font-medium transition-all duration-300 bg-zinc-900 text-white hover:bg-zime-44" 
+                data-filter="all"
+            >
+                All Projects
+            </button>
+            {categories.map(category => (
+                <button 
+                    class="filter-btn px-6 py-3 rounded-full text-lg font-medium transition-all duration-300 bg-zinc-100 text-zinc-800 hover:bg-zime-44 hover:text-white"
+                    data-filter={category.id}
+                >
+                    {category.title}
+                </button>
+            ))}
+        </div>
+
+        <div 
+            id="caseSlider"
+            class="swiper mt-10"
+            style={{
+                "--swiper-pagination-color": "#B9FF66",
+                "--swiper-pagination-bullet-inactive-color": "#999",
+                "--swiper-pagination-bullet-inactive-opacity": "1",
+                "--swiper-pagination-bullet-size": "12px",
+                "--swiper-pagination-bullet-horizontal-gap": "6px"
+            }}
+        >
+            <div class="swiper-wrapper">
+                {getAllCaseStudies().map(study => (
+                    <div class="swiper-slide" data-category={study.category.toLowerCase().replace(/\s+/g, '-')}>
+                        <div class="case-study-card bg-white rounded-[30px] shadow-card border border-zinc-200 overflow-hidden hover:border-zime-44 transition-all duration-300 group h-full">
+                            <div class="relative">
+                                <img 
+                                    src={study.image} 
+                                    alt={study.title}
+                                    class="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
+                                />
+                                <div class="absolute top-4 right-4">
+                                    <span class="px-4 py-1 bg-zime-44 text-white rounded-full text-sm">
+                                        {study.category}
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            <div class="p-6 space-y-4">
+                                <h4 class="text-xl font-semibold text-black group-hover:text-zime-44 transition-colors duration-300">
+                                    {study.title}
+                                </h4>
+                                <p class="text-zinc-600 line-clamp-3">
+                                    {study.fullDescription}
+                                </p>
+                                
+                                <div class="flex flex-wrap gap-2">
+                                    {study.tags.map(tag => (
+                                        <span class="px-3 py-1 bg-zinc-100 text-zinc-600 rounded-full text-sm">
+                                            {tag}
+                                        </span>
+                                    ))}
+                                </div>
+
+                                {study.metrics && (
+                                    <div class="grid grid-cols-3 gap-4 pt-4">
+                                        {study.metrics.map(metric => (
+                                            <div class="text-center">
+                                                <div class="text-2xl font-bold text-zime-44">{metric.value}</div>
+                                                <div class="text-sm text-zinc-600">{metric.label}</div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+
+                                <div class="pt-4 border-t border-zinc-100">
+                                    <a 
+                                        href={`/case-studies/${study.id}`} 
+                                        class="group/link inline-flex items-center gap-3 text-zime-44 hover:text-black transition-colors duration-300"
+                                    >
+                                        <span class="text-lg font-medium">En savoir plus</span>
+                                        <svg 
+                                            class="w-5 h-5 transform transition-transform duration-300 group-hover/link:translate-x-2" 
+                                            fill="none" 
+                                            stroke="currentColor" 
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <path 
+                                                stroke-linecap="round" 
+                                                stroke-linejoin="round" 
+                                                stroke-width="2" 
+                                                d="M17 8l4 4m0 0l-4 4m4-4H3"
+                                            />
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </div>
+            <div class="flex justify-around lg:justify-center mt-10 mb-4 lg:gap-[189px]">
+                <div class="swiper-button-prev w-7 h-7 sm:w-10 sm:h-10">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                        <path
+                            fill="#B9FF66"
+                            d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"
+                        />
+                    </svg>
+                </div>
+                <div class="swiper-pagination"></div>
+                <div class="swiper-button-next w-7 h-7 sm:w-10 sm:h-10 rotate-180">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                        <path
+                            fill="#B9FF66"
+                            d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"
+                        />
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-20 text-center">
+        <a href="/case-studies" class="inline-flex items-center gap-2 px-8 py-4 bg-zinc-900 hover:bg-white rounded-2xl text-white hover:text-black border text-xl font-normal leading-7 transition-all duration-300">
+            View All Case Studies
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+            </svg>
+        </a>
+    </div>
 </Container>
+
+<style>
+    .case-study-card {
+        opacity: 0;
+        animation: cardPopUp 0.5s ease-out forwards;
+    }
+
+    @keyframes cardPopUp {
+        0% {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .swiper-wrapper {
+        position: relative;
+    }
+
+    .swiper-slide {
+        display: flex;
+        align-items: stretch;
+        justify-content: center;
+        transition: all 500ms ease-in-out;
+    }
+
+    .swiper-pagination {
+        display: flex;
+        align-items: center;
+        width: auto !important;
+        position: static !important;
+    }
+
+    .swiper-button-prev,
+    .swiper-button-next {
+        position: relative !important;
+        margin: 0 !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+    }
+
+    .swiper-button-prev:after,
+    .swiper-button-next:after {
+        display: none;
+    }
+
+    .filter-btn {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .filter-btn::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(185, 255, 102, 0.1);
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+    }
+
+    .filter-btn:hover::after {
+        transform: translateX(0);
+    }
+
+    .filter-btn.active {
+        background-color: theme(colors.zime.44);
+        color: theme(colors.white);
+    }
+
+    .swiper-slide {
+        opacity: 1;
+        transition: opacity 0.3s ease;
+    }
+
+    .swiper-slide.hidden {
+        opacity: 0;
+        pointer-events: none;
+    }
+</style>
+
+<script>
+    import "swiper/css";
+    import "swiper/css/pagination";
+    import Swiper from "swiper";
+    import { Pagination, Navigation } from "swiper/modules";
+    import { register } from "swiper/element/bundle";
+    register();
+
+    Swiper.use([Pagination, Navigation]);
+
+    // Initialize Swiper
+    const swiper = new Swiper("#caseSlider", {
+        modules: [Pagination, Navigation],
+        pagination: {
+            el: ".swiper-pagination",
+            clickable: true,
+        },
+        navigation: {
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
+        },
+        loop: false,
+        autoplay: false,
+        grabCursor: true,
+        mousewheel: false,
+        slidesPerView: 1,
+        spaceBetween: 24,
+        breakpoints: {
+            640: {
+                slidesPerView: 2,
+                spaceBetween: 24,
+            },
+            1024: {
+                slidesPerView: 3,
+                spaceBetween: 32,
+            },
+        },
+    });
+
+    // Filter functionality
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const slides = document.querySelectorAll('.swiper-slide');
+
+    filterButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            // Remove active class from all buttons
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            // Add active class to clicked button
+            button.classList.add('active');
+
+            const filter = button.getAttribute('data-filter');
+            
+            slides.forEach(slide => {
+                const category = slide.getAttribute('data-category');
+                if (filter === 'all' || category === filter) {
+                    slide.classList.remove('hidden');
+                } else {
+                    slide.classList.add('hidden');
+                }
+            });
+
+            // Update Swiper
+            swiper.update();
+            swiper.slideTo(0);
+        });
+    });
+</script>

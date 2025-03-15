@@ -1,0 +1,236 @@
+---
+import Container from "./Container.astro"
+import Topic from "./Topic.astro"
+
+const achievements = [
+    {
+        number: "6+",
+        label: "Mois d'Excellence",
+        description: "Des résultats exceptionnels depuis notre création"
+    },
+    {
+        number: "100+",
+        label: "Clients Satisfaits",
+        description: "Accompagnement vers leurs objectifs digitaux"
+    },
+    {
+        number: "150%",
+        label: "Croissance Moyenne",
+        description: "Augmentation significative pour nos clients"
+    },
+    {
+        number: "24/7",
+        label: "Support Client",
+        description: "Toujours disponible pour votre réussite"
+    }
+];
+
+const expertise = [
+    {
+        icon: "🎯",
+        title: "Marketing Digital",
+        description: "Stratégies personnalisées pour maximiser votre présence en ligne"
+    },
+    {
+        icon: "💼",
+        title: "Acquisition Client",
+        description: "Techniques éprouvées pour attirer et convertir vos prospects"
+    },
+    {
+        icon: "📈",
+        title: "Croissance",
+        description: "Solutions innovantes pour développer votre entreprise"
+    }
+];
+---
+
+<Container>
+    <div class="relative flex flex-col items-center md:flex-row">
+        <Topic 
+            title="À Propos" 
+            description="Votre Partenaire pour le Succès Digital"
+        />
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 mt-12">
+        <div class="space-y-8 animate-fade-in">
+            <h3 class="text-4xl md:text-5xl font-bold text-black leading-tight scroll-trigger">
+                Une Agence Digitale <span class="text-gradient">Axée sur les Résultats</span>
+            </h3>
+            <div class="space-y-6">
+                <p class="text-lg md:text-xl text-black leading-relaxed scroll-trigger">
+                    Mustmedia est une agence digitale dynamique spécialisée dans le marketing des réseaux sociaux, l'acquisition de clients et les stratégies digitales à fort taux de conversion. En seulement six mois, nous avons aidé de nombreuses entreprises à se développer rapidement grâce à des campagnes marketing puissantes, une création de contenu stratégique et des tactiques de croissance innovantes.
+                </p>
+                <p class="text-lg md:text-xl text-black leading-relaxed scroll-trigger">
+                    Notre approche combine l'excellence créative avec des stratégies basées sur les données pour offrir des résultats mesurables. De la gestion complète des réseaux sociaux aux solutions de marketing digital complètes, nous nous engageons à faire réussir votre entreprise dans le paysage digital.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+                {expertise.map((item, index) => (
+                    <div 
+                        class="expertise-card bg-white p-6 rounded-2xl shadow-lg border border-zinc-100 hover:border-zime-44 transition-all duration-500 transform hover:-translate-y-2 scroll-trigger"
+                        style={`--delay: ${index * 200}ms`}
+                    >
+                        <div class="text-4xl mb-3 animate-bounce">{item.icon}</div>
+                        <h4 class="text-xl font-semibold mb-2">{item.title}</h4>
+                        <p class="text-zinc-600">{item.description}</p>
+                    </div>
+                ))}
+            </div>
+
+            <div class="pt-8">
+                <a href="#contact" class="group inline-flex items-center gap-3 px-8 py-4 bg-zime-44 hover:bg-white rounded-2xl text-white hover:text-black border border-zime-44 hover:border-white transition-all duration-300 transform hover:scale-105 scroll-trigger">
+                    <span class="text-xl font-medium">Commencez Votre Projet</span>
+                    <svg class="w-6 h-6 transition-transform duration-300 group-hover:translate-x-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                    </svg>
+                </a>
+            </div>
+        </div>
+        
+        <div class="grid grid-cols-2 gap-6">
+            {achievements.map((item, index) => (
+                <div 
+                    class="achievement-card p-6 bg-zinc-900 rounded-[30px] shadow-card border border-zinc-700 hover:border-zime-44 text-white transition-all duration-500 hover:scale-105 transform hover:-translate-y-2 group scroll-trigger"
+                    style={`--delay: ${index * 150}ms`}
+                >
+                    <div class="counter text-5xl font-bold text-zime-44 group-hover:scale-110 transition-transform duration-300" data-target={item.number.replace('+', '')}>0</div>
+                    <div class="text-xl font-semibold mt-3 group-hover:text-zime-44 transition-colors duration-300">{item.label}</div>
+                    <div class="text-base text-zinc-400 mt-2 group-hover:text-zinc-300 transition-colors duration-300">{item.description}</div>
+                </div>
+            ))}
+        </div>
+    </div>
+</Container>
+
+<style>
+    .text-gradient {
+        background: linear-gradient(to right, theme(colors.zime.44), #4ADE80);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .expertise-card {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    .expertise-card.visible {
+        animation: slideUp 0.6s ease forwards;
+        animation-delay: var(--delay);
+    }
+
+    .achievement-card {
+        opacity: 0;
+        animation: cardPopUp 0.5s ease-out forwards;
+        animation-delay: var(--delay);
+    }
+
+    .scroll-trigger {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.6s ease;
+    }
+
+    .scroll-trigger.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes cardPopUp {
+        0% {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .animate-fade-in {
+        animation: fadeIn 0.8s ease-out forwards;
+    }
+
+    @keyframes fadeIn {
+        0% {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+
+<script>
+    // Only run on client-side
+    if (typeof window !== 'undefined') {
+        // Intersection Observer for scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -10% 0px'
+        };
+
+        const scrollObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all scroll trigger elements
+        document.querySelectorAll('.scroll-trigger').forEach((element) => {
+            scrollObserver.observe(element);
+        });
+
+        // Counter animation
+        const counterObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    const counter = entry.target;
+                    const target = parseInt(counter.getAttribute('data-target') || '0');
+                    let count = 0;
+                    const speed = 2000 / target; // 2 seconds duration
+
+                    const updateCount = () => {
+                        if (count < target) {
+                            count++;
+                            counter.textContent = count + (target >= 100 ? '+' : '');
+                            setTimeout(updateCount, speed);
+                        }
+                    };
+
+                    updateCount();
+                    counterObserver.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        // Observe counter elements
+        document.querySelectorAll('.counter').forEach((counter) => {
+            counterObserver.observe(counter);
+        });
+
+        // Cleanup
+        document.addEventListener('astro:before-swap', () => {
+            scrollObserver.disconnect();
+            counterObserver.disconnect();
+        });
+    }
+</script>
