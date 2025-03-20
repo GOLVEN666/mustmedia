@@ -1,24 +1,70 @@
 ---
-import Container from "../components/Container.astro"
 import Layout from '../layouts/Layout.astro';
+import Container from "../components/Container.astro";
 ---
 
-<Layout title="Welcome to My site">
-	<main class="space-y-20">
+<Layout title="404 - Page Not Found | MustMedia">
+	<div class="bg-[#0B0F19] text-white min-h-screen">
 		<Container>
-            <div class="relative flex flex-col-reverse items-center justify-center md:flex-row" id="hero">
-                <div class="row items-center py-5 md:pb-20 md:pt-10">
-                    <div class="justify-center flex py-5">
-                        <img src="/404.svg" width="50%" alt="Hero"/>
-                    </div>
-                    <div class="text-center space-y-10">
-                        <h2 class="text-2xl font-medium leading-none md:text-4xl">Sorry, we couldn't find the page you were looking for</h2>
-                        <a class="px-9 py-5 bg-zinc-900 hover:bg-white text-white hover:text-black border rounded-2xl justify-items-center md:justify-items-start gap-2.5 inline-flex" rel="noopener noreferrer"  href="./" target="_blank">
-                            <h2 class="text-center text-xl font-normal leading-7">Go Back Home</h2>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </Container>
-	</main>
+			<div class="flex flex-col items-center justify-center min-h-screen py-16 text-center">
+				<div class="relative">
+					<h1 class="text-[150px] md:text-[200px] font-bold text-zime-44 leading-none">
+						404
+					</h1>
+					<div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#0B0F19]"></div>
+				</div>
+
+				<div class="max-w-2xl mx-auto space-y-6 relative z-10 -mt-10">
+					<h2 class="text-3xl md:text-4xl font-bold">
+						Oops! Page introuvable
+					</h2>
+					<p class="text-xl text-zinc-400">
+						Désolé, la page que vous recherchez n'existe pas ou a été déplacée.
+					</p>
+
+					<div class="flex flex-col sm:flex-row gap-4 justify-center mt-8">
+						<a 
+							href="/" 
+							class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-zime-44 text-black rounded-full text-lg font-medium hover:bg-white transition-colors duration-300"
+						>
+							<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+							</svg>
+							Retour à l'accueil
+						</a>
+						<a 
+							href="/case-studies" 
+							class="inline-flex items-center justify-center gap-2 px-6 py-3 border border-zinc-700 text-white rounded-full text-lg font-medium hover:border-zime-44 hover:text-zime-44 transition-colors duration-300"
+						>
+							<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+							</svg>
+							Voir nos études de cas
+						</a>
+					</div>
+				</div>
+
+				<!-- Decorative Elements -->
+				<div class="absolute inset-0 overflow-hidden pointer-events-none">
+					<div class="absolute top-1/4 left-1/4 w-64 h-64 bg-zime-44/10 rounded-full blur-3xl"></div>
+					<div class="absolute bottom-1/4 right-1/4 w-64 h-64 bg-zime-44/10 rounded-full blur-3xl"></div>
+				</div>
+			</div>
+		</Container>
+	</div>
 </Layout>
+
+<style>
+	@keyframes float {
+		0%, 100% {
+			transform: translateY(0);
+		}
+		50% {
+			transform: translateY(-20px);
+		}
+	}
+
+	.animate-float {
+		animation: float 6s ease-in-out infinite;
+	}
+</style>

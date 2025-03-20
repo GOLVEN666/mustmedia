@@ -2,193 +2,810 @@
 import Layout from '../../layouts/Layout.astro';
 import Container from "../../components/Container.astro";
 import { caseStudies } from '../../data/caseStudies';
-import type { CaseStudy } from '../../data/caseStudies';
+import type { GetStaticPaths } from 'astro';
 
-export async function getStaticPaths() {
-    return caseStudies.map(study => ({
-        params: { id: study.id.toString() },
-        props: { study }
-    }));
-}
+export const getStaticPaths = (() => {
+    return caseStudies.map(study => {
+        return {
+            params: { id: study.id },
+            props: { study },
+        };
+    });
+}) satisfies GetStaticPaths;
 
 const { id } = Astro.params;
-const study = caseStudies.find(s => s.id.toString() === id);
+const study = caseStudies.find(s => s.id === id);
 
-// Handle 404 if study not found
+// Redirect to 404 if study is not found
 if (!study) {
     return Astro.redirect('/404');
 }
+
+// Format date with fallback
+const formattedDate = study.date 
+    ? new Date(study.date).toLocaleDateString('fr-FR', {
+        year: 'numeric',
+        month: 'long'
+    })
+    : 'Date non disponible';
+
+// Serialize the monthly data for the chart
+const serializedMonthlyData = JSON.stringify(study.monthlyData || []).replace(/"/g, '&quot;');
 ---
 
-<Layout title={`${study.title} | MustMedia`}>
-    <div class="bg-[#0B0F19] text-white min-h-screen">
+<Layout title={`${study.title} | Case Study | MustMedia`}>
+    <!-- Add OpenLayers CSS in the head -->
+    <link 
+        rel="stylesheet" 
+        href="https://cdn.jsdelivr.net/npm/ol@v8.2.0/ol.css"
+        slot="head"
+    />
+
+    <div class="bg-[#0B0F19] text-white min-h-screen py-24">
         <Container>
-            <div class="py-24">
-                <!-- Back Button -->
-                <a href="/case-studies" class="inline-flex items-center gap-2 text-zinc-400 hover:text-white mb-8 transition-colors duration-300">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
-                    </svg>
-                    Retour aux études de cas
-                </a>
-
-                <!-- Category Badge -->
-                <div class="mb-8 text-center">
-                    <span class="inline-block px-4 py-1 bg-zime-44 text-white rounded-full text-sm">
-                        {study.category}
-                    </span>
+            <!-- Hero Section -->
+            <div class="relative rounded-3xl border border-zinc-700 overflow-hidden mb-16">
+                <div class="absolute inset-0">
+                    <img 
+                        src={study.image} 
+                        alt={study.title} 
+                        class="w-full h-full object-cover"
+                    />
+                    <div class="absolute inset-0 bg-gradient-to-r from-[#0B0F19] via-[#0B0F19]/90 to-transparent"></div>
                 </div>
 
-                <!-- Title -->
-                <h1 class="text-4xl md:text-5xl font-bold text-center mb-8">{study.title}</h1>
-
-                <!-- Description -->
-                <p class="text-xl text-zinc-400 text-center max-w-3xl mx-auto mb-12">
-                    {study.fullDescription}
-                </p>
-
-                <!-- Metrics -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-                    {study.metrics.map(metric => (
-                        <div class="bg-[#1A1F2E] rounded-3xl border border-zinc-700 p-6 text-center">
-                            <div class="flex items-center justify-center gap-2">
-                                <span class="text-3xl font-bold text-zime-44">{metric.value}</span>
-                                {metric.trend === 'up' && (
-                                    <svg class="w-6 h-6 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/>
-                                    </svg>
-                                )}
-                                {metric.trend === 'down' && (
-                                    <svg class="w-6 h-6 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
-                                    </svg>
-                                )}
-                            </div>
-                            <div class="text-zinc-400 mt-2">{metric.label}</div>
-                        </div>
-                    ))}
-                </div>
-
-                <!-- Tags -->
-                <div class="flex flex-wrap justify-center gap-3 mb-12">
-                    {study.tags.map(tag => (
-                        <span class="px-4 py-1 bg-[#1A1F2E] text-zinc-300 rounded-full text-sm border border-zinc-700">
-                            {tag}
+                <div class="relative z-10 p-12 max-w-3xl">
+                    <div class="space-y-6">
+                        <span class="inline-block px-4 py-1 bg-zime-44 text-white rounded-full text-sm">
+                            {study.category}
                         </span>
-                    ))}
-                </div>
-
-                <!-- Content Sections -->
-                <div class="space-y-12 max-w-3xl mx-auto">
-                    {study.challenge && (
-                        <div>
-                            <h2 class="text-2xl font-bold mb-4 text-white">Le Défi</h2>
-                            <div class="text-zinc-400 space-y-4">
-                                {study.challenge.split('\n').map((line: string) => (
-                                    <p>{line}</p>
+                        
+                        <h1 class="text-4xl md:text-5xl font-bold text-white">{study.title}</h1>
+                        
+                        <p class="text-xl text-zinc-400">{study.fullDescription}</p>
+                        
+                        <div class="flex items-center gap-4 text-zinc-400">
+                            <span>{formattedDate}</span>
+                            <span class="w-1.5 h-1.5 rounded-full bg-zinc-700"></span>
+                            <div class="flex gap-2">
+                                {study.tags.map(tag => (
+                                    <span class="text-sm px-3 py-1 bg-zinc-800/50 rounded-full">{tag}</span>
                                 ))}
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Main Content -->
+                <div class="lg:col-span-2 space-y-12">
+                    {study.challenge && (
+                        <section class="space-y-4">
+                            <h2 class="text-2xl font-semibold text-white">Le Challenge</h2>
+                            <p class="text-zinc-400 leading-relaxed">{study.challenge}</p>
+                        </section>
                     )}
 
                     {study.solution && (
-                        <div>
-                            <h2 class="text-2xl font-bold mb-4 text-white">Notre Solution</h2>
-                            <div class="text-zinc-400 space-y-4">
-                                {study.solution.split('\n').map((line: string) => (
-                                    <p>{line}</p>
+                        <section class="space-y-4">
+                            <h2 class="text-2xl font-semibold text-white">Notre Solution</h2>
+                            <p class="text-zinc-400 leading-relaxed">{study.solution}</p>
+                        </section>
+                    )}
+
+                    <!-- Zone Map Section -->
+                    {study.zoneData && study.zoneData.length > 0 && (
+                        <section class="space-y-4">
+                            <h2 class="text-2xl font-semibold text-white">Distribution Géographique</h2>
+                            <div class="h-[400px] w-full bg-[#1A1F2E]/50 rounded-xl overflow-hidden">
+                                <div id="zoneMap" class="w-full h-full"></div>
+                            </div>
+                            <!-- Zone Stats -->
+                            <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-4">
+                                {study.zoneData.map(zone => (
+                                    <div class="bg-[#1A1F2E]/50 rounded-xl p-4">
+                                        <h3 class="text-lg font-semibold text-white">{zone.zone}</h3>
+                                        <div class="mt-2 space-y-1">
+                                            <p class="text-sm text-zinc-400">
+                                                Leads: <span class="text-zime-44">{zone.leads}</span>
+                                            </p>
+                                            <div class="w-full bg-zinc-700 rounded-full h-2">
+                                                <div 
+                                                    class="bg-zime-44 h-2 rounded-full" 
+                                                    style={`width: ${zone.percentage}%`}
+                                                ></div>
+                                            </div>
+                                            <p class="text-xs text-zinc-500 text-right">{zone.percentage}%</p>
+                                        </div>
+                                    </div>
                                 ))}
                             </div>
-                        </div>
+                        </section>
                     )}
 
-                    {study.testimonial && (
-                        <blockquote class="bg-[#1A1F2E] rounded-3xl p-8 border border-zinc-700">
-                            <p class="text-xl italic mb-4 text-zinc-300">"{study.testimonial.quote}"</p>
-                            <footer>
-                                <div class="font-semibold text-white">{study.testimonial.author}</div>
-                                <div class="text-zinc-400">{study.testimonial.position}</div>
-                            </footer>
-                        </blockquote>
-                    )}
+                    <!-- Growth Chart -->
+                    <section class="space-y-4">
+                        <h2 class="text-2xl font-semibold text-white">Croissance</h2>
+                        <div class="h-[400px] w-full bg-[#1A1F2E]/50 rounded-xl p-6">
+                            <canvas id="growthChart" class="w-full h-full"></canvas>
+                        </div>
+                    </section>
                 </div>
 
-                {study.monthlyData && (
-                    <div class="my-12 p-8 bg-[#1A1F2E] rounded-3xl border border-zinc-700">
-                        <h2 class="text-2xl font-bold mb-6 text-center text-white">Croissance sur 6 mois</h2>
-                        <canvas class="h-[400px] w-full" id="growthChart"></canvas>
+                <!-- Sidebar -->
+                <div class="lg:col-span-1">
+                    <!-- Metrics -->
+                    <div class="bg-[#1A1F2E]/50 rounded-xl p-6 space-y-6">
+                        <h3 class="text-xl font-semibold text-white">Résultats Clés</h3>
+                        <div class="space-y-4">
+                            {study.metrics.map(metric => (
+                                <div class="flex items-center justify-between p-4 bg-[#0B0F19] rounded-lg">
+                                    <span class="text-zinc-400">{metric.label}</span>
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-xl font-semibold text-zime-44">{metric.value}</span>
+                                        {metric.trend === 'up' && (
+                                            <svg class="w-5 h-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/>
+                                            </svg>
+                                        )}
+                                        {metric.trend === 'down' && (
+                                            <svg class="w-5 h-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+                                            </svg>
+                                        )}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
                     </div>
-                )}
+
+                    <!-- Testimonial if exists -->
+                    {study.testimonial && (
+                        <div class="mt-8 bg-[#1A1F2E]/50 rounded-xl p-6 space-y-6">
+                            <h3 class="text-xl font-semibold text-white">Témoignage Client</h3>
+                            <blockquote class="space-y-4">
+                                <p class="text-zinc-400 italic">"{study.testimonial.quote}"</p>
+                                <footer class="text-sm">
+                                    <div class="font-semibold text-white">{study.testimonial.author}</div>
+                                    <div class="text-zinc-400">{study.testimonial.position}</div>
+                                </footer>
+                            </blockquote>
+                        </div>
+                    )}
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <div class="mt-16 pt-8 border-t border-zinc-800">
+                <a 
+                    href="/case-studies" 
+                    class="inline-flex items-center gap-2 text-zime-44 hover:text-white transition-colors"
+                >
+                    <svg class="w-5 h-5 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                    </svg>
+                    Retour aux études de cas
+                </a>
             </div>
         </Container>
     </div>
 </Layout>
 
-<script is:inline define:vars={{ study }}>
-if (typeof window !== 'undefined' && study.monthlyData) {
-    // Load Chart.js from CDN
-    const script = document.createElement('script');
-    script.src = 'https://cdn.jsdelivr.net/npm/chart.js';
-    script.onload = function() {
-        const ctx = document.getElementById('growthChart')?.getContext('2d');
-        if (ctx) {
-            new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: study.monthlyData.map(d => d.month),
-                    datasets: [
-                        {
-                            label: 'Revenue',
-                            data: study.monthlyData.map(d => d.revenue),
-                            borderColor: '#60A5FA',
-                            backgroundColor: 'rgba(96, 165, 250, 0.1)',
-                            fill: true,
-                            tension: 0.4
-                        },
-                        {
-                            label: 'Orders',
-                            data: study.monthlyData.map(d => d.orders),
-                            borderColor: '#34D399',
-                            backgroundColor: 'rgba(52, 211, 153, 0.1)',
-                            fill: true,
-                            tension: 0.4
-                        }
-                    ]
+<script is:inline define:vars={{ monthlyData: study.monthlyData, zoneData: study.zoneData }}>
+    window.monthlyData = monthlyData;
+    window.zoneData = zoneData;
+</script>
+
+<script>
+    import Chart from 'chart.js/auto';
+    import { CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler } from 'chart.js';
+    import { Map, View } from 'ol';
+    import TileLayer from 'ol/layer/Tile';
+    import { fromLonLat } from 'ol/proj';
+    import OSM from 'ol/source/OSM';
+    import { Vector as VectorLayer } from 'ol/layer';
+    import { Vector as VectorSource } from 'ol/source';
+    import { Feature } from 'ol';
+    import { Point } from 'ol/geom';
+    import { Style, Icon, Circle as CircleStyle, Fill, Stroke, Text } from 'ol/style';
+    import Overlay from 'ol/Overlay';
+    import CircleGeom from 'ol/geom/Circle';
+    import { Cluster } from 'ol/source';
+
+    // Register Chart.js components
+    Chart.register(
+        CategoryScale,
+        LinearScale,
+        PointElement,
+        LineElement,
+        Title,
+        Tooltip,
+        Legend,
+        Filler
+    );
+
+    // Store map instance globally
+    let mapInstance = null;
+
+    function getMarkerStyle(leads, percentage) {
+        // Calculate size based on leads (min: 15px, max: 45px)
+        const size = Math.min(45, Math.max(15, Math.sqrt(leads) * 1.8));
+        
+        // Calculate color based on percentage (green gradient)
+        const opacity = Math.max(0.3, Math.min(0.9, percentage / 100));
+        
+        return new Style({
+            image: new CircleStyle({
+                radius: size,
+                fill: new Fill({
+                    color: `rgba(185, 255, 102, ${opacity})`
+                }),
+                stroke: new Stroke({
+                    color: '#B9FF66',
+                    width: 2
+                })
+            }),
+            text: new Text({
+                text: leads.toString(),
+                fill: new Fill({
+                    color: '#ffffff'
+                }),
+                stroke: new Stroke({
+                    color: '#000000',
+                    width: 2
+                }),
+                font: `${Math.max(12, Math.min(16, size/2))}px sans-serif`,
+                offsetY: 2
+            })
+        });
+    }
+
+    function createLegend(mapElement) {
+        const legend = document.createElement('div');
+        legend.className = 'ol-legend ol-unselectable';
+        legend.innerHTML = `
+            <div class="legend-title">Distribution des Leads</div>
+            <div class="legend-scale">
+                <div class="legend-labels">
+                    <div class="legend-item">
+                        <span class="legend-key" style="background: rgba(185, 255, 102, 0.9)"></span>
+                        <span>Plus de 500 leads</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-key" style="background: rgba(185, 255, 102, 0.7)"></span>
+                        <span>200-500 leads</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-key" style="background: rgba(185, 255, 102, 0.5)"></span>
+                        <span>100-200 leads</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-key" style="background: rgba(185, 255, 102, 0.3)"></span>
+                        <span>Moins de 100 leads</span>
+                    </div>
+                </div>
+            </div>
+            <div class="legend-note mt-2 text-xs text-zinc-400">La taille des cercles est proportionnelle au nombre de leads</div>
+        `;
+        mapElement.appendChild(legend);
+    }
+
+    function initMap() {
+        const zoneData = window.zoneData;
+        if (!zoneData || !zoneData.length) return;
+
+        // Clean up existing map instance
+        if (mapInstance) {
+            mapInstance.setTarget(undefined);
+            mapInstance = null;
+        }
+
+        const mapElement = document.getElementById('zoneMap');
+        if (!mapElement) return;
+
+        try {
+            // City coordinates with additional metadata
+            const cityCoordinates = {
+                'Casablanca': {
+                    coords: [-7.5898, 33.5731],
+                    region: 'Casablanca-Settat'
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'top',
-                            labels: {
-                                color: '#D1D5DB'
+                'Rabat': {
+                    coords: [-6.8416, 34.0209],
+                    region: 'Rabat-Salé-Kénitra'
+                },
+                'Marrakech': {
+                    coords: [-7.9811, 31.6295],
+                    region: 'Marrakech-Safi'
+                },
+                'Tanger': {
+                    coords: [-5.8340, 35.7595],
+                    region: 'Tanger-Tétouan-Al Hoceïma'
+                },
+                'Fes': {
+                    coords: [-5.0078, 34.0181],
+                    region: 'Fès-Meknès'
+                },
+                'Agadir': {
+                    coords: [-9.5981, 30.4278],
+                    region: 'Souss-Massa'
+                }
+            };
+
+            // Create vector source for markers
+            const vectorSource = new VectorSource();
+
+            // Calculate total leads for percentage calculation
+            const totalLeads = zoneData.reduce((sum, zone) => sum + zone.leads, 0);
+
+            // Add markers for each zone
+            zoneData.forEach(zone => {
+                const cityInfo = cityCoordinates[zone.zone];
+                if (!cityInfo) return;
+
+                const feature = new Feature({
+                    geometry: new Point(fromLonLat(cityInfo.coords)),
+                    name: zone.zone,
+                    leads: zone.leads,
+                    percentage: zone.percentage,
+                    region: cityInfo.region
+                });
+
+                feature.setStyle(getMarkerStyle(zone.leads, zone.percentage));
+                vectorSource.addFeature(feature);
+
+                // Create enhanced tooltip overlay
+                const tooltipElement = document.createElement('div');
+                tooltipElement.className = 'map-tooltip';
+                tooltipElement.innerHTML = `
+                    <div class="bg-[#1A1F2E]/95 text-white px-4 py-3 rounded-lg border border-zime-44 shadow-lg">
+                        <div class="font-semibold text-lg mb-1">${zone.zone}</div>
+                        <div class="text-sm text-zinc-400 mb-3">${cityInfo.region}</div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <div class="text-zinc-400 text-sm">Leads</div>
+                                <div class="text-zime-44 font-semibold">${zone.leads.toLocaleString('fr-FR')}</div>
+                            </div>
+                            <div>
+                                <div class="text-zinc-400 text-sm">Part</div>
+                                <div class="text-zime-44 font-semibold">${zone.percentage.toFixed(1)}%</div>
+                            </div>
+                        </div>
+                        <div class="mt-2 pt-2 border-t border-zinc-700/50">
+                            <div class="text-xs text-zinc-400">Rang régional: ${getRank(zone.leads, zoneData)}</div>
+                        </div>
+                    </div>
+                `;
+
+                const tooltip = new Overlay({
+                    element: tooltipElement,
+                    position: fromLonLat(cityInfo.coords),
+                    positioning: 'bottom-center',
+                    offset: [0, -10],
+                    className: 'tooltip-overlay'
+                });
+
+                mapInstance?.addOverlay(tooltip);
+            });
+
+            // Create cluster source for dense areas
+            const clusterSource = new Cluster({
+                distance: 60,
+                source: vectorSource,
+                minDistance: 20
+            });
+
+            // Create vector layer with improved styling
+            const vectorLayer = new VectorLayer({
+                source: clusterSource,
+                style: function(feature) {
+                    const size = feature.get('features').length;
+                    if (size === 1) {
+                        return feature.get('features')[0].getStyle();
+                    }
+                    
+                    // Enhanced cluster style
+                    const totalClusterLeads = feature.get('features')
+                        .reduce((sum, f) => sum + f.get('leads'), 0);
+                    
+                    return new Style({
+                        image: new CircleStyle({
+                            radius: Math.min(50, Math.max(25, Math.sqrt(totalClusterLeads) * 1.5)),
+                            fill: new Fill({
+                                color: 'rgba(185, 255, 102, 0.8)'
+                            }),
+                            stroke: new Stroke({
+                                color: '#ffffff',
+                                width: 2
+                            })
+                        }),
+                        text: new Text({
+                            text: totalClusterLeads.toLocaleString('fr-FR'),
+                            fill: new Fill({
+                                color: '#ffffff'
+                            }),
+                            stroke: new Stroke({
+                                color: '#000000',
+                                width: 2
+                            }),
+                            font: '14px sans-serif'
+                        })
+                    });
+                }
+            });
+
+            // Initialize map with improved configuration
+            mapInstance = new Map({
+                target: 'zoneMap',
+                layers: [
+                    new TileLayer({
+                        source: new OSM({
+                            url: 'https://cartodb-basemaps-{a-d}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png'
+                        }),
+                        preload: Infinity
+                    }),
+                    vectorLayer
+                ],
+                view: new View({
+                    center: fromLonLat([-6.8498, 32.8802]),
+                    zoom: 6,
+                    minZoom: 5,
+                    maxZoom: 8,
+                    extent: fromLonLat([-17.1040, 20.7717]).concat(fromLonLat([0.1040, 36.7717])),
+                    constrainResolution: true
+                }),
+                controls: []
+            });
+
+            // Add custom controls
+            createLegend(mapElement);
+
+            // Add zoom controls with labels
+            const zoomControl = document.createElement('div');
+            zoomControl.className = 'ol-zoom ol-unselectable ol-control';
+            
+            const zoomInButton = document.createElement('button');
+            zoomInButton.innerHTML = '+';
+            zoomInButton.title = 'Zoom avant';
+            zoomInButton.onclick = () => {
+                const view = mapInstance.getView();
+                view.animate({
+                    zoom: view.getZoom() + 1,
+                    duration: 250
+                });
+            };
+
+            const zoomOutButton = document.createElement('button');
+            zoomOutButton.innerHTML = '−';
+            zoomOutButton.title = 'Zoom arrière';
+            zoomOutButton.onclick = () => {
+                const view = mapInstance.getView();
+                view.animate({
+                    zoom: view.getZoom() - 1,
+                    duration: 250
+                });
+            };
+
+            zoomControl.appendChild(zoomInButton);
+            zoomControl.appendChild(zoomOutButton);
+            mapElement.appendChild(zoomControl);
+
+        } catch (error) {
+            console.error('Error initializing map:', error);
+        }
+    }
+
+    // Helper function to get city rank based on leads
+    function getRank(leads, zoneData) {
+        const sortedLeads = [...zoneData].sort((a, b) => b.leads - a.leads);
+        const rank = sortedLeads.findIndex(zone => zone.leads === leads) + 1;
+        return rank === 1 ? '1er' : `${rank}ème`;
+    }
+
+    function initChart() {
+        const ctx = document.getElementById('growthChart');
+        if (!ctx) return;
+
+        const monthlyData = window.monthlyData || [];
+        if (!monthlyData.length) return;
+
+        const chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: monthlyData.map(data => data.month),
+                datasets: [
+                    {
+                        label: 'Revenue',
+                        data: monthlyData.map(data => data.revenue),
+                        borderColor: '#B9FF66',
+                        backgroundColor: 'rgba(185, 255, 102, 0.1)',
+                        tension: 0.4,
+                        fill: true,
+                        yAxisID: 'y',
+                        borderWidth: 2,
+                        pointRadius: 4,
+                        pointHoverRadius: 6
+                    },
+                    {
+                        label: 'Orders',
+                        data: monthlyData.map(data => data.orders),
+                        borderColor: '#FF66B9',
+                        backgroundColor: 'rgba(255, 102, 185, 0.1)',
+                        tension: 0.4,
+                        fill: true,
+                        yAxisID: 'y1',
+                        borderWidth: 2,
+                        pointRadius: 4,
+                        pointHoverRadius: 6
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    intersect: false,
+                    mode: 'index'
+                },
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            color: '#9CA3AF',
+                            font: {
+                                size: 12,
+                                weight: '500'
+                            },
+                            padding: 20,
+                            usePointStyle: true,
+                            pointStyle: 'circle'
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(17, 24, 39, 0.8)',
+                        titleColor: '#fff',
+                        bodyColor: '#9CA3AF',
+                        padding: 12,
+                        borderColor: 'rgba(255, 255, 255, 0.1)',
+                        borderWidth: 1,
+                        displayColors: true,
+                        usePointStyle: true,
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed.y !== null) {
+                                    label += context.dataset.label === 'Revenue' 
+                                        ? new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'MAD' }).format(context.parsed.y)
+                                        : context.parsed.y;
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)',
+                            drawBorder: false
+                        },
+                        ticks: {
+                            color: '#9CA3AF',
+                            font: {
+                                size: 12
                             }
                         }
                     },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            grid: {
-                                color: 'rgba(255, 255, 255, 0.1)'
-                            },
-                            ticks: {
-                                color: '#D1D5DB'
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                        title: {
+                            display: true,
+                            text: 'Revenue (DHS)',
+                            color: '#9CA3AF',
+                            font: {
+                                size: 12,
+                                weight: '500'
                             }
                         },
-                        x: {
-                            grid: {
-                                display: false
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)',
+                            drawBorder: false
+                        },
+                        ticks: {
+                            color: '#9CA3AF',
+                            font: {
+                                size: 12
                             },
-                            ticks: {
-                                color: '#D1D5DB'
+                            callback: function(value) {
+                                return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'MAD' }).format(value);
+                            }
+                        }
+                    },
+                    y1: {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                        title: {
+                            display: true,
+                            text: 'Orders',
+                            color: '#9CA3AF',
+                            font: {
+                                size: 12,
+                                weight: '500'
+                            }
+                        },
+                        grid: {
+                            drawOnChartArea: false,
+                            drawBorder: false
+                        },
+                        ticks: {
+                            color: '#9CA3AF',
+                            font: {
+                                size: 12
                             }
                         }
                     }
                 }
-            });
+            }
+        });
+
+        return chart;
+    }
+
+    // Debounce function to limit rapid re-initialization
+    function debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
+    }
+
+    // Debounced initialization functions
+    const debouncedInitMap = debounce(initMap, 250);
+    const debouncedInitChart = debounce(initChart, 250);
+
+    // Initialize on page load
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => {
+            debouncedInitChart();
+            debouncedInitMap();
+        });
+    } else {
+        debouncedInitChart();
+        debouncedInitMap();
+    }
+
+    // Handle view transitions
+    document.addEventListener('astro:page-load', () => {
+        debouncedInitChart();
+        debouncedInitMap();
+    });
+
+    // Clean up on page unload
+    document.addEventListener('astro:before-swap', () => {
+        if (mapInstance) {
+            mapInstance.remove();
+            mapInstance = null;
         }
-    };
-    document.head.appendChild(script);
-}
-</script> 
+    });
+</script>
+
+<style>
+    .marker-content {
+        contain: content;
+        pointer-events: none;
+    }
+
+    .marker-content > div {
+        white-space: nowrap;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        transform: translateY(-100%);
+    }
+
+    /* Map container styles */
+    #zoneMap {
+        background-color: #1A1F2E;
+    }
+
+    /* Custom zoom controls */
+    .ol-zoom {
+        position: absolute;
+        right: 0.5rem;
+        top: 0.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+
+    .ol-zoom button {
+        width: 2rem;
+        height: 2rem;
+        background: rgba(26, 31, 46, 0.9);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: white;
+        font-size: 1.25rem;
+        line-height: 1;
+        cursor: pointer;
+        border-radius: 0.375rem;
+        transition: all 0.2s;
+    }
+
+    .ol-zoom button:hover {
+        background: rgba(26, 31, 46, 1);
+        border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Hide OpenLayers attribution */
+    .ol-attribution {
+        display: none;
+    }
+
+    .map-tooltip {
+        pointer-events: none;
+        z-index: 1000;
+        transition: all 0.3s ease;
+    }
+
+    .ol-legend {
+        position: absolute;
+        bottom: 1rem;
+        left: 1rem;
+        background: rgba(26, 31, 46, 0.95);
+        padding: 1rem;
+        border-radius: 0.5rem;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: white;
+        font-size: 0.875rem;
+        backdrop-filter: blur(8px);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+
+    .legend-title {
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+
+    .legend-scale {
+        margin-top: 0.5rem;
+    }
+
+    .legend-labels {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .legend-key {
+        display: inline-block;
+        width: 1rem;
+        height: 1rem;
+        border-radius: 50%;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .tooltip-overlay {
+        transition: opacity 0.2s;
+    }
+
+    .tooltip-overlay:hover {
+        opacity: 1;
+    }
+</style> 

@@ -7,16 +7,18 @@ import Team from '../components/Team.astro';
 import Case from '../components/Case.astro';
 import Testimonial from '../components/Testimonial.astro';
 import Contact from '../components/Contact.astro';
+import Process from '../components/process.astro';
 ---
 <!-- Mustmedia Official Astro theme -->
 <Layout title="Mustmedia - Digital Marketing Agency">
 	<main class="space-y-20">
-		<Hero />
-		<About />
-		<Services />
-		<Case />
-		<Team />
-		<Testimonial />
-		<Contact data-aos="fade-up" />
+		<Hero client:load />
+		<About client:load />
+		<Services client:load />
+		<Case client:load />
+		<Process client:load />
+		<Team client:load />
+		<Testimonial client:load />
+		<Contact data-aos="fade-up" client:load />
 	</main>
 </Layout>

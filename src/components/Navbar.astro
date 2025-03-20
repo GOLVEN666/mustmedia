@@ -14,7 +14,7 @@ const navButton = { href: 'https://calendly.com/achraf-xchahid/30min', label: 'D
 ---
 
 <div class="mt-20">
-<nav class="w-full top-0 left-0 z-50 fixed bg-white">
+<nav class="w-full top-0 left-0 z-50 fixed bg-white border-b border-zinc-100">
   <Container>
   <header class="flex flex-col lg:flex-row justify-between items-center my-5">
     <Astronav>
@@ -23,16 +23,16 @@ const navButton = { href: 'https://calendly.com/achraf-xchahid/30min', label: 'D
           <img src="/Logo.svg" class="h-8" alt="Logo" />
         </a>
         <div class="block lg:hidden">
-          <MenuIcon class="w-8 h-8 text-black" />
+          <MenuIcon class="w-8 h-8 text-zinc-900" />
         </div>
       </div>
       <MenuItems class="hidden w-full lg:w-auto mt-2 lg:flex lg:mt-0">
-        <ul class="font-medium flex flex-col p-4 lg:p-0 mt-4 border rounded-lg lg:flex-row lg:space-x-8 lg:mt-0 lg:border-0">
+        <ul class="font-medium flex flex-col p-4 lg:p-0 mt-4 border border-zinc-100 rounded-lg lg:flex-row lg:space-x-8 lg:mt-0 lg:border-0">
           {menuitems.map((item) => (
             <li>
               <a
                 href={item.href}
-                class="block py-2 px-4 text-zinc-300 hover:text-white transition-colors duration-300"
+                class="block py-2 px-4 text-zinc-900 hover:text-zime-44 transition-colors duration-300"
               >
                 {item.label}
               </a>
@@ -67,7 +67,11 @@ const navButton = { href: 'https://calendly.com/achraf-xchahid/30min', label: 'D
 <style>
     nav {
         backdrop-filter: blur(10px);
-        background: rgba(255, 255, 255, 0.9);
+        background: rgba(255, 255, 255, 0.95);
         border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .active {
+        @apply text-zime-44;
     }
 </style>

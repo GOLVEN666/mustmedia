@@ -1,0 +1,156 @@
+---
+// MarketingStrategySteps.astro
+interface MarketingStep {
+  id: string;
+  number: string;
+  title: string;
+  description: string;
+  isExpanded?: boolean;
+}
+
+const marketingSteps: MarketingStep[] = [
+  {
+    id: "discovery",
+    number: "01",
+    title: "Discovery & Analysis",
+    description: "We begin by thoroughly analyzing your business, target audience, and competitors. This initial consultation helps us understand your unique selling propositions, identify market opportunities, and establish clear KPIs for your lead generation campaign.",
+    isExpanded: true
+  },
+  {
+    id: "strategy",
+    number: "02",
+    title: "Strategy Development",
+    description: "Our team creates a customized lead generation strategy tailored to your specific business goals. This includes selecting the most effective channels, crafting compelling messaging, and designing a content roadmap that will engage your ideal prospects at each stage of the buyer's journey.",
+    isExpanded: false
+  },
+  {
+    id: "execution",
+    number: "03",
+    title: "Campaign Execution",
+    description: "We implement your lead generation campaign across all selected channels. This includes developing high-converting landing pages, creating engaging content, setting up marketing automation, and deploying targeted advertising campaigns designed to attract qualified leads.",
+    isExpanded: false
+  },
+  {
+    id: "optimization",
+    number: "04",
+    title: "Optimization & Scaling",
+    description: "Using real-time data analytics, we continuously monitor campaign performance and make strategic adjustments to improve results. We identify which channels and tactics are generating the highest quality leads and optimize your budget allocation accordingly to maximize ROI.",
+    isExpanded: false
+  },
+  {
+    id: "reporting",
+    number: "05",
+    title: "Reporting & Strategy Refinement",
+    description: "We provide comprehensive reporting on all lead generation metrics and KPIs. During regular strategy sessions, we review performance data, discuss insights, and collaboratively refine the approach to continuously improve lead quality and conversion rates.",
+    isExpanded: false
+  }
+];
+---
+
+<div class="marketing-strategy-wrapper my-16">
+  <div class="container mx-auto px-4 max-w-5xl">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl md:text-4xl font-bold mb-6 inline-block relative">
+        Our <span class="text-[#63adf2]">Marketing Strategy</span> Process
+        <div class="absolute -bottom-3 left-0 w-full h-1 bg-[#B9FF66]/30"></div>
+      </h2>
+      <p class="text-lg md:text-xl text-zinc-700 max-w-3xl mx-auto">
+        Step-by-Step Guide to Generating High-Quality Leads for Your Business
+      </p>
+    </div>
+
+    <div class="flex flex-col gap-6">
+      {marketingSteps.map((step) => (
+        <div class="step-container rounded-3xl overflow-hidden border border-zinc-200 shadow-sm transition-all duration-300 hover:shadow-md" data-step-id={step.id}>
+          <div class={`step-header flex items-center justify-between p-6 md:p-8 cursor-pointer ${step.isExpanded ? 'bg-[#B9FF66]/10' : 'bg-zinc-50'}`}>
+            <div class="flex items-center gap-6">
+              <span class="step-number text-4xl md:text-5xl font-bold text-zinc-800 opacity-80">{step.number}</span>
+              <h3 class="step-title text-xl md:text-2xl font-semibold text-zinc-800">{step.title}</h3>
+            </div>
+            <button class="toggle-button w-10 h-10 flex items-center justify-center rounded-full bg-white border border-zinc-200 transition-all duration-300">
+              <span class={`block transition-transform duration-300 ${step.isExpanded ? 'rotate-0' : 'rotate-90'}`}>
+                {step.isExpanded ? 
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-zinc-600"><line x1="5" y1="12" x2="19" y2="12"></line></svg> :
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-zinc-600"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                }
+              </span>
+            </button>
+          </div>
+          <div class={`step-content overflow-hidden transition-all duration-300 ${step.isExpanded ? 'max-h-[500px]' : 'max-h-0'}`}>
+            <div class="p-6 md:p-8 pt-0 md:pt-0 md:pl-24">
+              <p class="text-zinc-700">{step.description}</p>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const stepContainers = document.querySelectorAll('.step-container');
+    
+    stepContainers.forEach(container => {
+      const header = container.querySelector('.step-header');
+      const content = container.querySelector('.step-content');
+      const toggleButton = container.querySelector('.toggle-button');
+      
+      header.addEventListener('click', () => {
+        const isExpanded = content.classList.contains('max-h-[500px]');
+        
+        // Toggle the current step
+        if (isExpanded) {
+          content.classList.remove('max-h-[500px]');
+          content.classList.add('max-h-0');
+          toggleButton.querySelector('span').classList.remove('rotate-0');
+          toggleButton.querySelector('span').classList.add('rotate-90');
+          header.classList.remove('bg-[#B9FF66]/10');
+          header.classList.add('bg-zinc-50');
+        } else {
+          content.classList.add('max-h-[500px]');
+          content.classList.remove('max-h-0');
+          toggleButton.querySelector('span').classList.add('rotate-0');
+          toggleButton.querySelector('span').classList.remove('rotate-90');
+          header.classList.add('bg-[#B9FF66]/10');
+          header.classList.remove('bg-zinc-50');
+        }
+      });
+    });
+  });
+</script>
+
+<style>
+  .step-container {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .step-container:hover {
+    border-color: #B9FF66;
+  }
+  
+  .step-content {
+    transition: max-height 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+  
+  .toggle-button:hover {
+    background-color: #B9FF66;
+    border-color: #B9FF66;
+  }
+  
+  .step-number {
+    font-feature-settings: "tnum";
+    font-variant-numeric: tabular-nums;
+  }
+  
+  /* Animation for content */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .step-content > div {
+    animation: fadeIn 0.5s ease-out;
+  }
+</style>

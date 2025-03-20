@@ -1,7 +1,19 @@
+export interface MonthlyData {
+    month: string;
+    revenue: number;
+    orders: number;
+}
+
 export interface Metric {
     label: string;
     value: string;
     trend: "up" | "down";
+}
+
+export interface ZoneData {
+    zone: string;
+    leads: number;
+    percentage: number;
 }
 
 export interface Testimonial {
@@ -23,11 +35,17 @@ export interface CaseStudy {
     challenge?: string;
     solution?: string;
     testimonial?: Testimonial;
-    monthlyData?: Array<{
-        month: string;
-        revenue: number;
-        orders: number;
-    }>;
+    monthlyData: MonthlyData[];
+    zoneData?: ZoneData[];
+    revenueGrowth?: {
+        startAmount: number;
+        endAmount: number;
+        days: number;
+        leads: {
+            start: number;
+            end: number;
+        };
+    };
 }
 
 export const caseStudies: CaseStudy[] = [
@@ -44,8 +62,24 @@ export const caseStudies: CaseStudy[] = [
             { label: "Nouveaux Employés", value: "5+", trend: "up" }
         ],
         tags: ["Réseaux Sociaux", "Acquisition Client", "Instagram"],
-        image: "/case-studies/mourad.jpg",
-        date: "2024-03"
+        image: "/case-studies/mourad.png",
+        date: "2024-03",
+        monthlyData: [
+            { month: 'Jan', revenue: 2000, orders: 20 },
+            { month: 'Feb', revenue: 3500, orders: 35 },
+            { month: 'Mar', revenue: 5500, orders: 55 },
+            { month: 'Apr', revenue: 7500, orders: 75 },
+            { month: 'May', revenue: 8500, orders: 85 },
+            { month: 'Jun', revenue: 10000, orders: 100 }
+        ],
+        zoneData: [
+            { zone: "Casablanca", leads: 860, percentage: 43 },
+            { zone: "Rabat", leads: 420, percentage: 21 },
+            { zone: "Marrakech", leads: 280, percentage: 14 },
+            { zone: "Tanger", leads: 180, percentage: 9 },
+            { zone: "Fes", leads: 160, percentage: 8 },
+            { zone: "Agadir", leads: 100, percentage: 5 }
+        ]
     },
     {
         id: "palais-delices",
@@ -59,8 +93,33 @@ export const caseStudies: CaseStudy[] = [
             { label: "Croissance Ventes", value: "300%", trend: "up" }
         ],
         tags: ["E-Commerce", "Stratégie Marketing", "Croissance"],
-        image: "/case-studies/palais.jpg",
-        date: "2024-02"
+        image: "/case-studies/palais.png",
+        date: "2024-02",
+        monthlyData: [
+            { month: 'Jan', revenue: 5000, orders: 50 },
+            { month: 'Feb', revenue: 7500, orders: 75 },
+            { month: 'Mar', revenue: 15000, orders: 150 },
+            { month: 'Apr', revenue: 25000, orders: 250 },
+            { month: 'May', revenue: 35000, orders: 350 },
+            { month: 'Jun', revenue: 50000, orders: 500 }
+        ],
+        revenueGrowth: {
+            startAmount: 8000,
+            endAmount: 60000,
+            days: 20,
+            leads: {
+                start: 30,
+                end: 500
+            }
+        },
+        zoneData: [
+            { zone: "Casablanca", leads: 430, percentage: 35 },
+            { zone: "Rabat", leads: 280, percentage: 23 },
+            { zone: "Marrakech", leads: 220, percentage: 18 },
+            { zone: "Fes", leads: 150, percentage: 12 },
+            { zone: "Agadir", leads: 90, percentage: 7 },
+            { zone: "Tanger", leads: 60, percentage: 5 }
+        ]
     },
     {
         id: "kiddytown",
@@ -74,8 +133,24 @@ export const caseStudies: CaseStudy[] = [
             { label: "Croissance Clients", value: "150%", trend: "up" }
         ],
         tags: ["Commerce Local", "Image de Marque", "Domination Marché"],
-        image: "/case-studies/kiddytown.jpg",
-        date: "2024-01"
+        image: "/case-studies/kt.png",
+        date: "2024-01",
+        monthlyData: [
+            { month: 'Jan', revenue: 3000, orders: 30 },
+            { month: 'Feb', revenue: 4500, orders: 45 },
+            { month: 'Mar', revenue: 6500, orders: 65 },
+            { month: 'Apr', revenue: 8500, orders: 85 },
+            { month: 'May', revenue: 9500, orders: 95 },
+            { month: 'Jun', revenue: 12000, orders: 120 }
+        ],
+        zoneData: [
+            { zone: "Casablanca", leads: 258, percentage: 32 },
+            { zone: "Rabat", leads: 180, percentage: 22 },
+            { zone: "Marrakech", leads: 150, percentage: 19 },
+            { zone: "Tanger", leads: 120, percentage: 15 },
+            { zone: "Fes", leads: 60, percentage: 7 },
+            { zone: "Agadir", leads: 40, percentage: 5 }
+        ]
     },
     // Sites Web à Haute Valeur
     {
@@ -90,8 +165,24 @@ export const caseStudies: CaseStudy[] = [
             { label: "Demandes B2B", value: "+150%", trend: "up" }
         ],
         tags: ["Développement Web", "B2B", "Industrie du Café"],
-        image: "/case-studies/khatra.jpg",
-        date: "2024-03"
+        image: "/case-studies/khatra.png",
+        date: "2024-03",
+        monthlyData: [
+            { month: 'Jan', revenue: 15000, orders: 25 },
+            { month: 'Feb', revenue: 18000, orders: 30 },
+            { month: 'Mar', revenue: 25000, orders: 42 },
+            { month: 'Apr', revenue: 35000, orders: 58 },
+            { month: 'May', revenue: 45000, orders: 75 },
+            { month: 'Jun', revenue: 60000, orders: 100 }
+        ],
+        zoneData: [
+            { zone: "Casablanca", leads: 172, percentage: 25 },
+            { zone: "Rabat", leads: 155, percentage: 22 },
+            { zone: "Marrakech", leads: 140, percentage: 20 },
+            { zone: "Fes", leads: 120, percentage: 17 },
+            { zone: "Tanger", leads: 65, percentage: 9 },
+            { zone: "Agadir", leads: 45, percentage: 7 }
+        ]
     },
     {
         id: "moads",
@@ -106,7 +197,23 @@ export const caseStudies: CaseStudy[] = [
         ],
         tags: ["E-Commerce", "Développement Web", "Design UX"],
         image: "/case-studies/moads.jpg",
-        date: "2024-02"
+        date: "2024-02",
+        monthlyData: [
+            { month: 'Jan', revenue: 25000, orders: 250 },
+            { month: 'Feb', revenue: 35000, orders: 350 },
+            { month: 'Mar', revenue: 45000, orders: 450 },
+            { month: 'Apr', revenue: 65000, orders: 650 },
+            { month: 'May', revenue: 85000, orders: 850 },
+            { month: 'Jun', revenue: 100000, orders: 1000 }
+        ],
+        zoneData: [
+            { zone: "Casablanca", leads: 344, percentage: 30 },
+            { zone: "Rabat", leads: 290, percentage: 25 },
+            { zone: "Marrakech", leads: 230, percentage: 20 },
+            { zone: "Tanger", leads: 150, percentage: 13 },
+            { zone: "Fes", leads: 80, percentage: 7 },
+            { zone: "Agadir", leads: 60, percentage: 5 }
+        ]
     },
     {
         id: "mustmedia",
@@ -121,7 +228,23 @@ export const caseStudies: CaseStudy[] = [
         ],
         tags: ["Développement Web", "Photographie", "Acquisition Client"],
         image: "/case-studies/mustmedia.jpg",
-        date: "2024-01"
+        date: "2024-01",
+        monthlyData: [
+            { month: 'Jan', revenue: 20000, orders: 15 },
+            { month: 'Feb', revenue: 25000, orders: 20 },
+            { month: 'Mar', revenue: 35000, orders: 28 },
+            { month: 'Apr', revenue: 45000, orders: 35 },
+            { month: 'May', revenue: 60000, orders: 45 },
+            { month: 'Jun', revenue: 80000, orders: 60 }
+        ],
+        zoneData: [
+            { zone: "Casablanca", leads: 215, percentage: 28 },
+            { zone: "Rabat", leads: 185, percentage: 24 },
+            { zone: "Marrakech", leads: 160, percentage: 21 },
+            { zone: "Tanger", leads: 110, percentage: 14 },
+            { zone: "Fes", leads: 65, percentage: 8 },
+            { zone: "Agadir", leads: 40, percentage: 5 }
+        ]
     }
 ];
 

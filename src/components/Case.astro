@@ -20,14 +20,14 @@ const getAllCaseStudies = () => {
     <div class="mt-12">
         <div class="flex flex-wrap justify-center gap-4 mb-12">
             <button 
-                class="filter-btn active px-6 py-3 rounded-full text-lg font-medium transition-all duration-300 bg-zinc-900 text-white hover:bg-zime-44" 
+                class="filter-btn active px-6 py-3 rounded-full text-lg font-medium transition-all duration-300 bg-zinc-900 text-white hover:bg-zime-44 shadow-sm" 
                 data-filter="all"
             >
                 All Projects
             </button>
             {categories.map(category => (
                 <button 
-                    class="filter-btn px-6 py-3 rounded-full text-lg font-medium transition-all duration-300 bg-zinc-100 text-zinc-800 hover:bg-zime-44 hover:text-white"
+                    class="filter-btn px-6 py-3 rounded-full text-lg font-medium transition-all duration-300 bg-zinc-100 text-zinc-800 hover:bg-zime-44 hover:text-white shadow-sm"
                     data-filter={category.id}
                 >
                     {category.title}
@@ -49,21 +49,23 @@ const getAllCaseStudies = () => {
             <div class="swiper-wrapper">
                 {getAllCaseStudies().map(study => (
                     <div class="swiper-slide" data-category={study.category.toLowerCase().replace(/\s+/g, '-')}>
-                        <div class="case-study-card bg-white rounded-[30px] shadow-card border border-zinc-200 overflow-hidden hover:border-zime-44 transition-all duration-300 group h-full">
-                            <div class="relative">
+                        <div class="case-study-card bg-white rounded-[30px] shadow-lg border border-zinc-200 overflow-hidden hover:border-zime-44 transition-all duration-300 group h-full flex flex-col">
+                            <div class="relative overflow-hidden">
                                 <img 
                                     src={study.image} 
                                     alt={study.title}
-                                    class="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
+                                    class="w-full h-52 object-cover transition-transform duration-500 group-hover:scale-110"
+                                    loading="lazy"
                                 />
                                 <div class="absolute top-4 right-4">
-                                    <span class="px-4 py-1 bg-zime-44 text-white rounded-full text-sm">
+                                    <span class="px-4 py-1 bg-zime-44 text-zinc-900 font-medium rounded-full text-sm shadow-sm">
                                         {study.category}
                                     </span>
                                 </div>
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                             </div>
                             
-                            <div class="p-6 space-y-4">
+                            <div class="p-6 space-y-4 flex-grow">
                                 <h4 class="text-xl font-semibold text-black group-hover:text-zime-44 transition-colors duration-300">
                                     {study.title}
                                 </h4>
@@ -73,31 +75,33 @@ const getAllCaseStudies = () => {
                                 
                                 <div class="flex flex-wrap gap-2">
                                     {study.tags.map(tag => (
-                                        <span class="px-3 py-1 bg-zinc-100 text-zinc-600 rounded-full text-sm">
+                                        <span class="px-3 py-1 bg-zinc-100 text-zinc-600 rounded-full text-sm hover:bg-zinc-200 transition-colors duration-300">
                                             {tag}
                                         </span>
                                     ))}
                                 </div>
 
                                 {study.metrics && (
-                                    <div class="grid grid-cols-3 gap-4 pt-4">
+                                    <div class="grid grid-cols-3 gap-4 pt-4 pb-2">
                                         {study.metrics.map(metric => (
-                                            <div class="text-center">
-                                                <div class="text-2xl font-bold text-zime-44">{metric.value}</div>
+                                            <div class="text-center group/metric">
+                                                <div class="text-2xl font-bold text-zime-44 group-hover/metric:transform group-hover/metric:scale-110 transition-transform duration-300">{metric.value}</div>
                                                 <div class="text-sm text-zinc-600">{metric.label}</div>
                                             </div>
                                         ))}
                                     </div>
                                 )}
+                            </div>
 
-                                <div class="pt-4 border-t border-zinc-100">
-                                    <a 
-                                        href={`/case-studies/${study.id}`} 
-                                        class="group/link inline-flex items-center gap-3 text-zime-44 hover:text-black transition-colors duration-300"
-                                    >
-                                        <span class="text-lg font-medium">En savoir plus</span>
+                            <div class="px-6 py-4 border-t border-zinc-100 bg-zinc-50 group-hover:bg-zinc-100 transition-colors duration-300">
+                                <a 
+                                    href={`/case-studies/${study.id}`} 
+                                    class="group/link inline-flex items-center gap-3 text-zime-44 hover:text-black transition-colors duration-300 w-full justify-between"
+                                >
+                                    <span class="text-lg font-medium">En savoir plus</span>
+                                    <span class="w-8 h-8 rounded-full bg-white flex items-center justify-center group-hover/link:bg-zime-44 group-hover/link:text-white transition-all duration-300 shadow-sm">
                                         <svg 
-                                            class="w-5 h-5 transform transition-transform duration-300 group-hover/link:translate-x-2" 
+                                            class="w-5 h-5 transform transition-transform duration-300 group-hover/link:translate-x-0.5" 
                                             fill="none" 
                                             stroke="currentColor" 
                                             viewBox="0 0 24 24"
@@ -109,27 +113,29 @@ const getAllCaseStudies = () => {
                                                 d="M17 8l4 4m0 0l-4 4m4-4H3"
                                             />
                                         </svg>
-                                    </a>
-                                </div>
+                                    </span>
+                                </a>
                             </div>
                         </div>
                     </div>
                 ))}
             </div>
             <div class="flex justify-around lg:justify-center mt-10 mb-4 lg:gap-[189px]">
-                <div class="swiper-button-prev w-7 h-7 sm:w-10 sm:h-10">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                <div class="swiper-button-prev w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center bg-white rounded-full shadow-md hover:bg-zime-44 transition-colors duration-300 group">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="w-5 h-5">
                         <path
-                            fill="#B9FF66"
+                            fill="currentColor"
+                            class="text-zinc-800 group-hover:text-white transition-colors duration-300"
                             d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"
                         />
                     </svg>
                 </div>
                 <div class="swiper-pagination"></div>
-                <div class="swiper-button-next w-7 h-7 sm:w-10 sm:h-10 rotate-180">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                <div class="swiper-button-next w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center bg-white rounded-full shadow-md hover:bg-zime-44 transition-colors duration-300 group">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="w-5 h-5 rotate-180">
                         <path
-                            fill="#B9FF66"
+                            fill="currentColor"
+                            class="text-zinc-800 group-hover:text-white transition-colors duration-300"
                             d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"
                         />
                     </svg>
@@ -139,9 +145,9 @@ const getAllCaseStudies = () => {
     </div>
 
     <div class="mt-20 text-center">
-        <a href="/case-studies" class="inline-flex items-center gap-2 px-8 py-4 bg-zinc-900 hover:bg-white rounded-2xl text-white hover:text-black border text-xl font-normal leading-7 transition-all duration-300">
+        <a href="/case-studies" class="inline-flex items-center gap-3 px-8 py-4 bg-zinc-900 hover:bg-zime-44 rounded-2xl text-white border border-transparent hover:border-zinc-200 text-xl font-medium leading-7 transition-all duration-300 shadow-md group">
             View All Case Studies
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-5 h-5 transform group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
             </svg>
         </a>
@@ -152,6 +158,8 @@ const getAllCaseStudies = () => {
     .case-study-card {
         opacity: 0;
         animation: cardPopUp 0.5s ease-out forwards;
+        backface-visibility: hidden;
+        will-change: transform, opacity;
     }
 
     @keyframes cardPopUp {
@@ -174,6 +182,7 @@ const getAllCaseStudies = () => {
         align-items: stretch;
         justify-content: center;
         transition: all 500ms ease-in-out;
+        height: auto;
     }
 
     .swiper-pagination {
@@ -200,6 +209,13 @@ const getAllCaseStudies = () => {
     .filter-btn {
         position: relative;
         overflow: hidden;
+        transform: translateY(0);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .filter-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(185, 255, 102, 0.2);
     }
 
     .filter-btn::after {
@@ -221,15 +237,17 @@ const getAllCaseStudies = () => {
     .filter-btn.active {
         background-color: theme(colors.zime.44);
         color: theme(colors.white);
+        box-shadow: 0 4px 12px rgba(185, 255, 102, 0.3);
     }
 
     .swiper-slide {
         opacity: 1;
-        transition: opacity 0.3s ease;
+        transition: opacity 0.5s ease, transform 0.5s ease;
     }
 
     .swiper-slide.hidden {
         opacity: 0;
+        transform: scale(0.95);
         pointer-events: none;
     }
 </style>
@@ -238,25 +256,29 @@ const getAllCaseStudies = () => {
     import "swiper/css";
     import "swiper/css/pagination";
     import Swiper from "swiper";
-    import { Pagination, Navigation } from "swiper/modules";
+    import { Pagination, Navigation, EffectFade } from "swiper/modules";
     import { register } from "swiper/element/bundle";
     register();
 
-    Swiper.use([Pagination, Navigation]);
+    Swiper.use([Pagination, Navigation, EffectFade]);
 
     // Initialize Swiper
     const swiper = new Swiper("#caseSlider", {
-        modules: [Pagination, Navigation],
+        modules: [Pagination, Navigation, EffectFade],
         pagination: {
             el: ".swiper-pagination",
             clickable: true,
+            dynamicBullets: true,
         },
         navigation: {
             nextEl: ".swiper-button-next",
             prevEl: ".swiper-button-prev",
         },
         loop: false,
-        autoplay: false,
+        autoplay: {
+            delay: 5000,
+            disableOnInteraction: false,
+        },
         grabCursor: true,
         mousewheel: false,
         slidesPerView: 1,
@@ -271,33 +293,100 @@ const getAllCaseStudies = () => {
                 spaceBetween: 32,
             },
         },
+        speed: 600,
+        effect: 'slide',
+        keyboard: {
+            enabled: true,
+        },
+        a11y: {
+            prevSlideMessage: 'Previous case study',
+            nextSlideMessage: 'Next case study',
+        },
     });
 
-    // Filter functionality
+    // Filter functionality with animation
     const filterButtons = document.querySelectorAll('.filter-btn');
     const slides = document.querySelectorAll('.swiper-slide');
-
+    
+    // Add ripple effect to buttons
     filterButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            // Remove active class from all buttons
+        button.addEventListener('click', function(e) {
+            const x = e.clientX - e.target.getBoundingClientRect().left;
+            const y = e.clientY - e.target.getBoundingClientRect().top;
+            
+            const ripple = document.createElement('span');
+            ripple.style.left = `${x}px`;
+            ripple.style.top = `${y}px`;
+            ripple.classList.add('ripple');
+            
+            this.appendChild(ripple);
+            
+            setTimeout(() => {
+                ripple.remove();
+            }, 600);
+            
+            // Filter functionality
             filterButtons.forEach(btn => btn.classList.remove('active'));
-            // Add active class to clicked button
             button.classList.add('active');
 
             const filter = button.getAttribute('data-filter');
             
+            // Smooth filtering with fade effect
             slides.forEach(slide => {
                 const category = slide.getAttribute('data-category');
                 if (filter === 'all' || category === filter) {
+                    slide.style.opacity = '0';
                     slide.classList.remove('hidden');
+                    setTimeout(() => {
+                        slide.style.opacity = '1';
+                    }, 50);
                 } else {
-                    slide.classList.add('hidden');
+                    slide.style.opacity = '0';
+                    setTimeout(() => {
+                        slide.classList.add('hidden');
+                    }, 300);
                 }
             });
 
             // Update Swiper
-            swiper.update();
-            swiper.slideTo(0);
+            setTimeout(() => {
+                swiper.update();
+                swiper.slideTo(0);
+            }, 350);
+        });
+    });
+
+    // Lazy loading images
+    document.addEventListener('DOMContentLoaded', () => {
+        const lazyImages = document.querySelectorAll('img[loading="lazy"]');
+        
+        if ('IntersectionObserver' in window) {
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const image = entry.target;
+                        image.src = image.dataset.src || image.src;
+                        image.classList.add('loaded');
+                        imageObserver.unobserve(image);
+                    }
+                });
+            });
+            
+            lazyImages.forEach(img => imageObserver.observe(img));
+        }
+    });
+
+    // Add hover effects to case study cards
+    const cards = document.querySelectorAll('.case-study-card');
+    cards.forEach(card => {
+        card.addEventListener('mouseenter', () => {
+            card.style.transform = 'translateY(-8px)';
+            card.style.boxShadow = '0 12px 24px rgba(0, 0, 0, 0.1)';
+        });
+        
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = 'translateY(0)';
+            card.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.08)';
         });
     });
 </script>

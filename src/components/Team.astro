@@ -1,121 +1,410 @@
 ---
-import Container from "./Container.astro"
-import Topic from "./Topic.astro";
+interface TeamMember {
+  id: string
+  name: string
+  role: string
+  image: string
+  description: string
+  linkedin?: string
+  twitter?: string
+  facebook?: string
+  instagram?: string
+}
 
-const teamMembers = [
-    {
-        name: "Naim Abdelghafour",
-        title: "Manager, Marketing, Expert en Ventes",
-        description: "Direction des décisions stratégiques, acquisition de clients et stratégie marketing. Expert en ventes, tunnels marketing et rédaction publicitaire.",
-        profile: "/team/c2.png",
-        link: "#"
-    },
-    {
-        name: "Achraf Chahid",
-        title: "Brand Strategist | Brand Innovation Engineer | UI/UX Designer",
-        description: "En tant que professionnel polyvalent, je combine expertise en stratégie de marque et compétences en développement technique pour créer des expériences numériques percutantes. Je dirige des projets de la conception à l'exécution, assurant des identités de marque cohérentes et des designs centrés sur l'utilisateur tout en gérant des équipes pluridisciplinaires. Mon objectif est de stimuler l'innovation et de fournir des résultats exceptionnels qui résonnent avec les audiences et atteignent les objectifs commerciaux.",
-        profile: "/team/achraf.png",
-        link: "#"
-    },
-    {
-        name: "Ibrahim Mobaker",
-        title: "Photographe",
-        description: "Amélioration des efforts marketing avec des visuels de haute qualité et des images de marque professionnelles.",
-        profile: "/team/ibrahim.jpg",
-        link: "#"
-    },
-    {
-        name: "Aymen",
-        title: "Développeur",
-        description: "Développeur expert construisant et optimisant des sites web qui génèrent des conversions et la croissance des entreprises.",
-        profile: "/team/aymen.jpg",
-        link: "#"
-    },
-    {
-        name: "Yasser",
-        title: "Développeur",
-        description: "Spécialisé dans la création de sites web et de solutions numériques haute performance.",
-        profile: "/team/yasser.jpg",
-        link: "#"
-    }
-];
-
-const processSteps = [
-    {
-        index: "01",
-        label: "Découverte & Stratégie",
-        content: "Nous commençons par comprendre vos objectifs commerciaux et votre public cible pour développer une stratégie numérique sur mesure."
-    },
-    {
-        index: "02",
-        label: "Création de Contenu",
-        content: "Notre équipe crée du contenu engageant et de haute qualité, incluant la photographie professionnelle et la rédaction persuasive."
-    },
-    {
-        index: "03",
-        label: "Mise en Œuvre",
-        content: "Nous exécutons votre stratégie marketing numérique sur plusieurs canaux, des médias sociaux à l'optimisation de sites web."
-    },
-    {
-        index: "04",
-        label: "Suivi & Optimisation",
-        content: "Surveillance continue et optimisation des campagnes pour assurer un ROI maximal et la croissance de l'entreprise."
-    }
-];
+const teamMembers: TeamMember[] = [
+  {
+    id: "naim",
+    name: "Naim Abdelghafour",
+    role: "Manager, Marketing",
+    image: "/team/c2.png",
+    description:
+      "Direction des décisions stratégiques, acquisition de clients et stratégie marketing.",
+    linkedin: "https://linkedin.com/in/naim-abdelghafour",
+    twitter: "https://twitter.com/naim",
+    facebook: "https://facebook.com/naim",
+  },
+  {
+    id: "achraf",
+    name: "Achraf Chahid",
+    role: "Brand Strategist",
+    image: "/team/achraf.png",
+    description:
+      "Expert en stratégie de marque et développement d'interfaces utilisateur innovantes.",
+    linkedin: "https://linkedin.com/in/achraf-chahid",
+    twitter: "https://twitter.com/achraf",
+  },
+  {
+    id: "ibrahim",
+    name: "Ibrahim Mobaker",
+    role: "Photographe",
+    image: "/team/image 2.png",
+    description:
+      "Amélioration des efforts marketing avec des visuels de haute qualité.",
+    linkedin: "https://linkedin.com/in/ibrahim-mobaker",
+    instagram: "https://instagram.com/ibrahim",
+  },
+  {
+    id: "aymen",
+    name: "Aymen",
+    role: "Développeur",
+    image: "/team/image 1.png",
+    description:
+      "Développeur expert construisant des sites web qui génèrent des conversions.",
+    linkedin: "https://linkedin.com/in/aymen",
+    twitter: "https://twitter.com/aymen",
+  },
+  {
+    id: "yasser",
+    name: "Yasser",
+    role: "Développeur",
+    image: "/team/ava.png",
+    description: "Spécialisé dans la création de sites web haute performance.",
+    linkedin: "https://linkedin.com/in/yasser",
+    facebook: "https://facebook.com/yasser",
+  },
+]
 ---
 
-<Container>
-<div class="relative flex flex-col items-center md:flex-row">
-    <Topic title="Processus" description="Notre Approche Éprouvée pour le Succès en Marketing Digital"/>
-</div>
-
-<div class="my-6">
-    <div class="space-y-10">
-        {
-            processSteps.map((item) => (
-                <div class="p-8 bg-white rounded-[45px] shadow-card border border-zinc-900">
-                    <div class="flex items-center gap-4 mb-4">
-                        <span class="text-3xl font-bold text-zime-44">{item.index}</span>
-                        <h3 class="text-2xl font-semibold">{item.label}</h3>
-                    </div>
-                    <p class="text-lg text-zinc-600">{item.content}</p>
-                </div>
-            ))
-        }
+<section class="py-24 bg-white" id="team">
+  <div class="container mx-auto px-4">
+    <div class="text-center mb-16">
+      <h2 class="text-4xl font-bold mb-6 inline-block relative">
+        Notre <span class="text-[#B9FF66]">Équipe</span>
+        <div class="absolute -bottom-3 left-0 w-full h-1 bg-[#B9FF66]/30"></div>
+      </h2>
+      <p class="text-xl text-zinc-700 max-w-3xl mx-auto">
+        Rencontrez l'équipe qualifiée et expérimentée derrière nos stratégies de marketing digital réussies
+      </p>
     </div>
-</div>
 
-<div class="relative flex flex-col items-center md:flex-row pt-6">
-    <Topic title="Équipe" description="Rencontrez l'équipe qualifiée et expérimentée derrière nos stratégies de marketing digital réussies"/>
-</div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {teamMembers.map((member, index) => (
+        <div
+          class="parallax-card perspective-container"
+          data-aos="fade-up"
+          data-aos-delay={index * 150}
+          data-member-id={member.id}
+        >
+          <div class="team-card group relative overflow-hidden rounded-3xl border border-zinc-100 bg-white transition-all duration-500 hover:border-[#B9FF66] hover:shadow-xl shadow-md transform-container">
+            {/* Parallax elements */}
+            <div class="parallax-layer depth-1"></div>
+            <div class="parallax-layer depth-2"></div>
+            <div class="parallax-layer depth-3"></div>
+            
+            {/* Corner shape decoration */}
+            <div class="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-[#B9FF66]/10 to-[#B9FF66]/30 rounded-bl-[2rem] z-10 transition-all duration-500 group-hover:w-20 group-hover:h-20"></div>
 
-<div class="flex-row items-center py-5" id="team">
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-    {
-    teamMembers.map(({ title, description, name, link, profile} ) => (
-    <div class="h-[331px] px-[35px] py-10 bg-white rounded-[45px] shadow-card border border-zinc-900 flex-col justify-start items-start gap-2.5 inline-flex text-black">
-        <div class="flex-col justify-start items-start gap-7 flex">
-            <div class="self-stretch justify-start items-start inline-flex">
-                <div class="grow shrink basis-0 justify-start items-center gap-8 flex">
-                    <div class="h-[102.82px] left-0 top-0 relative">
-                        <img src={profile} alt={name} class="rounded-full"/>
-                    </div>
-                    <div class="flex-col justify-end items-start inline-flex">
-                        <div class="text-lg font-normal">{title}</div>
-                        <div class="text-xl font-medium">{name}</div>
-                    </div>
-                </div>
-                <a class="top-0 right-0" href={link}>
-                    <img src="/team/lng.svg" alt="vector"/>
-                </a>
+            {/* Settings icon */}
+            <div class="absolute top-4 right-4 z-20">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-zinc-400 group-hover:text-zinc-600 transition-colors duration-300">
+                <circle cx="12" cy="12" r="3"></circle>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+              </svg>
             </div>
-            <hr class="w-full border border-black"/>
-            <p class="text-sm md:text-lg">{description}</p>
-        </div>
-    </div>
-    ))
-    }
-    </div>
-</div>
 
-</Container>
+            {/* Top section with image and name */}
+            <div class="px-8 pt-8 pb-4">
+              <div class="flex items-center gap-4">
+                <div class="relative parallax-element" data-depth="0.2">
+                  <div class="w-20 h-20 rounded-full overflow-hidden border-4 border-white shadow-sm transition-transform duration-500 group-hover:scale-105">
+                    <img
+                      src={member.image}
+                      alt={member.name}
+                      class="w-full h-full object-cover object-center"
+                    />
+                  </div>
+                  <div class="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-[#B9FF66] flex items-center justify-center text-white shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-500 parallax-element" data-depth="0.4">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  </div>
+                </div>
+                <div class="parallax-element" data-depth="0.1">
+                  <div class="text-sm font-medium text-[#B9FF66] uppercase mb-1 tracking-wider">{member.role}</div>
+                  <h3 class="text-2xl font-bold text-zinc-800 transition-colors duration-300">{member.name}</h3>
+                </div>
+              </div>
+            </div>
+
+            {/* Divider */}
+            <div class="h-px w-full bg-zinc-100 group-hover:bg-[#B9FF66]/20 transition-colors duration-300"></div>
+
+            {/* Description */}
+            <div class="p-8 pt-6">
+              <p class="text-zinc-600 text-sm leading-relaxed mb-6 parallax-element" data-depth="0.05">{member.description}</p>
+              
+              {/* Action tabs */}
+              <div class="flex items-center justify-between parallax-element" data-depth="0.15">
+                <div class="flex space-x-1">
+                  <button class="px-3 py-1 text-sm rounded-full bg-zinc-100 text-zinc-600 transition-all duration-300 hover:bg-[#B9FF66]/10 hover:text-zinc-800">
+                    Profil
+                  </button>
+                  <button class="px-3 py-1 text-sm rounded-full text-zinc-400 transition-all duration-300 hover:bg-zinc-100 hover:text-zinc-600">
+                    Message
+                  </button>
+                </div>
+                
+                {/* Social links */}
+                <div class="flex space-x-2">
+                  {member.linkedin && (
+                    <a href={member.linkedin} target="_blank" rel="noopener noreferrer" 
+                       class="w-8 h-8 rounded-full flex items-center justify-center text-zinc-400 bg-zinc-100 hover:bg-[#B9FF66]/20 hover:text-zinc-700 transition-all duration-300">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                        <rect width="4" height="12" x="2" y="9"></rect>
+                        <circle cx="4" cy="4" r="2"></circle>
+                      </svg>
+                    </a>
+                  )}
+                  {member.twitter && (
+                    <a href={member.twitter} target="_blank" rel="noopener noreferrer"
+                       class="w-8 h-8 rounded-full flex items-center justify-center text-zinc-400 bg-zinc-100 hover:bg-[#B9FF66]/20 hover:text-zinc-700 transition-all duration-300">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path>
+                      </svg>
+                    </a>
+                  )}
+                  {member.facebook && (
+                    <a href={member.facebook} target="_blank" rel="noopener noreferrer"
+                       class="w-8 h-8 rounded-full flex items-center justify-center text-zinc-400 bg-zinc-100 hover:bg-[#B9FF66]/20 hover:text-zinc-700 transition-all duration-300">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                      </svg>
+                    </a>
+                  )}
+                  {member.instagram && (
+                    <a href={member.instagram} target="_blank" rel="noopener noreferrer"
+                       class="w-8 h-8 rounded-full flex items-center justify-center text-zinc-400 bg-zinc-100 hover:bg-[#B9FF66]/20 hover:text-zinc-700 transition-all duration-300">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
+                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                        <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
+                      </svg>
+                    </a>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Glowing effect overlay */}
+            <div class="spotlight-effect"></div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Base card styles */
+  .perspective-container {
+    perspective: 1000px;
+    transform-style: preserve-3d;
+  }
+  
+  .team-card {
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    will-change: transform, box-shadow, border-color;
+    background-color: #ffffff;
+    position: relative;
+    z-index: 1;
+    transform-style: preserve-3d;
+  }
+  
+  /* Parallax layers */
+  .parallax-layer {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  
+  .depth-1 {
+    transform: translateZ(-1px);
+    background: linear-gradient(45deg, rgba(185, 255, 102, 0.02), rgba(185, 255, 102, 0));
+  }
+  
+  .depth-2 {
+    transform: translateZ(-2px);
+    background: linear-gradient(135deg, rgba(185, 255, 102, 0), rgba(185, 255, 102, 0.03));
+  }
+  
+  .depth-3 {
+    transform: translateZ(-3px);
+    background: linear-gradient(225deg, rgba(185, 255, 102, 0.01), rgba(0, 0, 0, 0));
+  }
+  
+  .parallax-element {
+    transform: translateZ(20px);
+    will-change: transform;
+  }
+  
+  /* Spotlight effect */
+  .spotlight-effect {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at var(--x) var(--y), 
+                               rgba(185, 255, 102, 0.12) 0%, 
+                               rgba(255, 255, 255, 0) 60%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+    z-index: 3;
+    mix-blend-mode: color-dodge;
+  }
+  
+  .team-card:hover .spotlight-effect {
+    opacity: 1;
+  }
+  
+  /* Hover effect */
+  .team-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+  }
+
+  /* Custom animation for cards */
+  @keyframes cardAppear {
+    0% {
+      opacity: 0;
+      transform: translateY(30px) rotateX(5deg);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) rotateX(0);
+    }
+  }
+
+  /* Apply animation to cards */
+  [data-aos="fade-up"] {
+    opacity: 0;
+    transform: translateY(30px) rotateX(5deg);
+    animation: cardAppear 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  }
+  
+  /* Add delay for each card */
+  [data-member-id="naim"] { animation-delay: 0ms; }
+  [data-member-id="achraf"] { animation-delay: 150ms; }
+  [data-member-id="ibrahim"] { animation-delay: 300ms; }
+  [data-member-id="aymen"] { animation-delay: 450ms; }
+  [data-member-id="yasser"] { animation-delay: 600ms; }
+  
+  /* Floating animation */
+  @keyframes float {
+    0% { transform: translateZ(20px); }
+    50% { transform: translateZ(25px); }
+    100% { transform: translateZ(20px); }
+  }
+  
+  /* Apply subtle floating animation to elements */
+  .team-card:hover .parallax-element {
+    animation: float 3s ease-in-out infinite;
+  }
+  
+  /* Different animation timing for elements */
+  .team-card:hover .parallax-element[data-depth="0.1"] {
+    animation-delay: 0.1s;
+  }
+  
+  .team-card:hover .parallax-element[data-depth="0.2"] {
+    animation-delay: 0.2s;
+  }
+  
+  .team-card:hover .parallax-element[data-depth="0.4"] {
+    animation-delay: 0.3s;
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const cards = document.querySelectorAll('.parallax-card');
+    
+    cards.forEach(card => {
+      const cardElement = card.querySelector('.team-card');
+      const spotlightEffect = card.querySelector('.spotlight-effect');
+      const parallaxElements = card.querySelectorAll('.parallax-element');
+      
+      // 3D tilt effect on mouse move
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        // Card center
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        
+        // Calculate rotation based on mouse position (more subtle values)
+        const rotateY = ((x - centerX) / centerX) * 8; // Max 8 degrees
+        const rotateX = ((centerY - y) / centerY) * 5; // Max 5 degrees
+        
+        // Apply transform to card
+        cardElement.style.transform = `
+          translateY(-8px) 
+          rotateX(${rotateX}deg) 
+          rotateY(${rotateY}deg)
+        `;
+        
+        // Calculate spotlight position
+        const spotX = (x / rect.width) * 100;
+        const spotY = (y / rect.height) * 100;
+        spotlightEffect.style.setProperty('--x', `${spotX}%`);
+        spotlightEffect.style.setProperty('--y', `${spotY}%`);
+        
+        // Parallax movement of inner elements
+        parallaxElements.forEach(element => {
+          const depth = parseFloat(element.getAttribute('data-depth')) || 0.1;
+          const moveX = ((x - centerX) / centerX) * depth * 20;
+          const moveY = ((y - centerY) / centerY) * depth * 20;
+          
+          element.style.transform = `
+            translate3d(${moveX}px, ${moveY}px, ${20 + depth * 30}px)
+          `;
+        });
+      });
+      
+      // Reset transforms on mouse leave
+      card.addEventListener('mouseleave', () => {
+        cardElement.style.transform = '';
+        
+        // Reset parallax elements positions with a smooth transition
+        parallaxElements.forEach(element => {
+          element.style.transition = 'transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+          element.style.transform = 'translateZ(20px)';
+          
+          // Remove transition after animation completes
+          setTimeout(() => {
+            element.style.transition = '';
+          }, 800);
+        });
+      });
+      
+      // Add subtle initial transform to create depth
+      setTimeout(() => {
+        parallaxElements.forEach(element => {
+          const depth = parseFloat(element.getAttribute('data-depth')) || 0.1;
+          element.style.transform = `translateZ(${20 + depth * 10}px)`;
+        });
+      }, 800);
+    });
+    
+    // Optional: Add scroll-triggered animations
+    window.addEventListener('scroll', () => {
+      cards.forEach(card => {
+        const rect = card.getBoundingClientRect();
+        const isInView = (
+          rect.top <= window.innerHeight * 0.8 && 
+          rect.bottom >= window.innerHeight * 0.2
+        );
+        
+        if (isInView) {
+          card.classList.add('in-view');
+        }
+      });
+    });
+    
+    // Trigger initial scroll check
+    setTimeout(() => {
+      window.dispatchEvent(new Event('scroll'));
+    }, 100);
+  });
+</script>
