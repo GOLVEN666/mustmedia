@@ -4,6 +4,8 @@ import Container from "../../components/Container.astro";
 import { caseStudies } from '../../data/caseStudies';
 import type { GetStaticPaths } from 'astro';
 
+export const prerender = true;
+
 export const getStaticPaths = (() => {
     return caseStudies.map(study => {
         return {
@@ -209,9 +211,8 @@ const serializedMonthlyData = JSON.stringify(study.monthlyData || []).replace(/"
     import { Vector as VectorSource } from 'ol/source';
     import { Feature } from 'ol';
     import { Point } from 'ol/geom';
-    import { Style, Icon, Circle as CircleStyle, Fill, Stroke, Text } from 'ol/style';
+    import { Style, Circle as CircleStyle, Fill, Stroke, Text } from 'ol/style';
     import Overlay from 'ol/Overlay';
-    import CircleGeom from 'ol/geom/Circle';
     import { Cluster } from 'ol/source';
 
     // Declare window properties
