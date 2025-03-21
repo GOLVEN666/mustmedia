@@ -214,6 +214,14 @@ const serializedMonthlyData = JSON.stringify(study.monthlyData || []).replace(/"
     import CircleGeom from 'ol/geom/Circle';
     import { Cluster } from 'ol/source';
 
+    // Declare window properties
+    declare global {
+        interface Window {
+            zoneData: any[];
+            monthlyData: any[];
+        }
+    }
+
     // Register Chart.js components
     Chart.register(
         CategoryScale,
@@ -227,9 +235,9 @@ const serializedMonthlyData = JSON.stringify(study.monthlyData || []).replace(/"
     );
 
     // Store map instance globally
-    let mapInstance = null;
+    let mapInstance: Map | null = null;
 
-    function getMarkerStyle(leads, percentage) {
+    function getMarkerStyle(leads: number, percentage: number) {
         // Calculate size based on leads (min: 15px, max: 45px)
         const size = Math.min(45, Math.max(15, Math.sqrt(leads) * 1.8));
         
@@ -262,7 +270,7 @@ const serializedMonthlyData = JSON.stringify(study.monthlyData || []).replace(/"
         });
     }
 
-    function createLegend(mapElement) {
+    function createLegend(mapElement: HTMLElement) {
         const legend = document.createElement('div');
         legend.className = 'ol-legend ol-unselectable';
         legend.innerHTML = `
@@ -307,7 +315,7 @@ const serializedMonthlyData = JSON.stringify(study.monthlyData || []).replace(/"
 
         try {
             // City coordinates with additional metadata
-            const cityCoordinates = {
+            const cityCoordinates: Record<string, { coords: [number, number]; region: string }> = {
                 'Casablanca': {
                     coords: [-7.5898, 33.5731],
                     region: 'Casablanca-Settat'
@@ -338,10 +346,10 @@ const serializedMonthlyData = JSON.stringify(study.monthlyData || []).replace(/"
             const vectorSource = new VectorSource();
 
             // Calculate total leads for percentage calculation
-            const totalLeads = zoneData.reduce((sum, zone) => sum + zone.leads, 0);
+            const totalLeads = zoneData.reduce((sum: number, zone: { leads: number }) => sum + zone.leads, 0);
 
             // Add markers for each zone
-            zoneData.forEach(zone => {
+            zoneData.forEach((zone: { zone: string; leads: number; percentage: number }) => {
                 const cityInfo = cityCoordinates[zone.zone];
                 if (!cityInfo) return;
 
@@ -408,7 +416,7 @@ const serializedMonthlyData = JSON.stringify(study.monthlyData || []).replace(/"
                     
                     // Enhanced cluster style
                     const totalClusterLeads = feature.get('features')
-                        .reduce((sum, f) => sum + f.get('leads'), 0);
+                        .reduce((sum: number, f: Feature) => sum + f.get('leads'), 0);
                     
                     return new Style({
                         image: new CircleStyle({
@@ -470,9 +478,13 @@ const serializedMonthlyData = JSON.stringify(study.monthlyData || []).replace(/"
             zoomInButton.innerHTML = '+';
             zoomInButton.title = 'Zoom avant';
             zoomInButton.onclick = () => {
+                if (!mapInstance) return;
                 const view = mapInstance.getView();
+                if (!view) return;
+                const zoom = view.getZoom();
+                if (zoom === undefined) return;
                 view.animate({
-                    zoom: view.getZoom() + 1,
+                    zoom: zoom + 1,
                     duration: 250
                 });
             };
@@ -481,9 +493,13 @@ const serializedMonthlyData = JSON.stringify(study.monthlyData || []).replace(/"
             zoomOutButton.innerHTML = '−';
             zoomOutButton.title = 'Zoom arrière';
             zoomOutButton.onclick = () => {
+                if (!mapInstance) return;
                 const view = mapInstance.getView();
+                if (!view) return;
+                const zoom = view.getZoom();
+                if (zoom === undefined) return;
                 view.animate({
-                    zoom: view.getZoom() - 1,
+                    zoom: zoom - 1,
                     duration: 250
                 });
             };
@@ -498,14 +514,14 @@ const serializedMonthlyData = JSON.stringify(study.monthlyData || []).replace(/"
     }
 
     // Helper function to get city rank based on leads
-    function getRank(leads, zoneData) {
+    function getRank(leads: number, zoneData: { leads: number }[]): string {
         const sortedLeads = [...zoneData].sort((a, b) => b.leads - a.leads);
         const rank = sortedLeads.findIndex(zone => zone.leads === leads) + 1;
         return rank === 1 ? '1er' : `${rank}ème`;
     }
 
     function initChart() {
-        const ctx = document.getElementById('growthChart');
+        const ctx = document.getElementById('growthChart') as HTMLCanvasElement;
         if (!ctx) return;
 
         const monthlyData = window.monthlyData || [];
@@ -556,7 +572,7 @@ const serializedMonthlyData = JSON.stringify(study.monthlyData || []).replace(/"
                             color: '#9CA3AF',
                             font: {
                                 size: 12,
-                                weight: '500'
+                                weight: 'normal'
                             },
                             padding: 20,
                             usePointStyle: true,
@@ -580,7 +596,7 @@ const serializedMonthlyData = JSON.stringify(study.monthlyData || []).replace(/"
                                 }
                                 if (context.parsed.y !== null) {
                                     label += context.dataset.label === 'Revenue' 
-                                        ? new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'MAD' }).format(context.parsed.y)
+                                        ? new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'MAD' }).format(context.parsed.y as number)
                                         : context.parsed.y;
                                 }
                                 return label;
@@ -592,12 +608,13 @@ const serializedMonthlyData = JSON.stringify(study.monthlyData || []).replace(/"
                     x: {
                         grid: {
                             color: 'rgba(255, 255, 255, 0.1)',
-                            drawBorder: false
+                            display: false
                         },
                         ticks: {
                             color: '#9CA3AF',
                             font: {
-                                size: 12
+                                size: 12,
+                                weight: 'normal'
                             }
                         }
                     },
@@ -611,20 +628,21 @@ const serializedMonthlyData = JSON.stringify(study.monthlyData || []).replace(/"
                             color: '#9CA3AF',
                             font: {
                                 size: 12,
-                                weight: '500'
+                                weight: 'normal'
                             }
                         },
                         grid: {
                             color: 'rgba(255, 255, 255, 0.1)',
-                            drawBorder: false
+                            display: false
                         },
                         ticks: {
                             color: '#9CA3AF',
                             font: {
-                                size: 12
+                                size: 12,
+                                weight: 'normal'
                             },
                             callback: function(value) {
-                                return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'MAD' }).format(value);
+                                return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'MAD' }).format(value as number);
                             }
                         }
                     },
@@ -638,17 +656,18 @@ const serializedMonthlyData = JSON.stringify(study.monthlyData || []).replace(/"
                             color: '#9CA3AF',
                             font: {
                                 size: 12,
-                                weight: '500'
+                                weight: 'normal'
                             }
                         },
                         grid: {
                             drawOnChartArea: false,
-                            drawBorder: false
+                            display: false
                         },
                         ticks: {
                             color: '#9CA3AF',
                             font: {
-                                size: 12
+                                size: 12,
+                                weight: 'normal'
                             }
                         }
                     }
@@ -660,9 +679,9 @@ const serializedMonthlyData = JSON.stringify(study.monthlyData || []).replace(/"
     }
 
     // Debounce function to limit rapid re-initialization
-    function debounce(func, wait) {
-        let timeout;
-        return function executedFunction(...args) {
+    function debounce(func: (...args: any[]) => void, wait: number) {
+        let timeout: number | undefined;
+        return function executedFunction(...args: any[]) {
             const later = () => {
                 clearTimeout(timeout);
                 func(...args);
@@ -696,7 +715,7 @@ const serializedMonthlyData = JSON.stringify(study.monthlyData || []).replace(/"
     // Clean up on page unload
     document.addEventListener('astro:before-swap', () => {
         if (mapInstance) {
-            mapInstance.remove();
+            mapInstance.setTarget(undefined);
             mapInstance = null;
         }
     });
@@ -808,4 +827,4 @@ const serializedMonthlyData = JSON.stringify(study.monthlyData || []).replace(/"
     .tooltip-overlay:hover {
         opacity: 1;
     }
-</style> 
+</style>

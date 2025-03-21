@@ -316,15 +316,17 @@ const teamMembers: TeamMember[] = [
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    const cards = document.querySelectorAll('.parallax-card');
+    const cards = document.querySelectorAll<HTMLElement>('.parallax-card');
     
     cards.forEach(card => {
-      const cardElement = card.querySelector('.team-card');
-      const spotlightEffect = card.querySelector('.spotlight-effect');
-      const parallaxElements = card.querySelectorAll('.parallax-element');
+      const cardElement = card.querySelector<HTMLElement>('.team-card');
+      const spotlightEffect = card.querySelector<HTMLElement>('.spotlight-effect');
+      const parallaxElements = card.querySelectorAll<HTMLElement>('.parallax-element');
       
+      if (!cardElement || !spotlightEffect) return;
+
       // 3D tilt effect on mouse move
-      card.addEventListener('mousemove', (e) => {
+      card.addEventListener('mousemove', (e: MouseEvent) => {
         const rect = card.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
@@ -352,7 +354,8 @@ const teamMembers: TeamMember[] = [
         
         // Parallax movement of inner elements
         parallaxElements.forEach(element => {
-          const depth = parseFloat(element.getAttribute('data-depth')) || 0.1;
+          const depthStr = element.getAttribute('data-depth');
+          const depth = depthStr ? parseFloat(depthStr) : 0.1;
           const moveX = ((x - centerX) / centerX) * depth * 20;
           const moveY = ((y - centerY) / centerY) * depth * 20;
           
@@ -381,7 +384,8 @@ const teamMembers: TeamMember[] = [
       // Add subtle initial transform to create depth
       setTimeout(() => {
         parallaxElements.forEach(element => {
-          const depth = parseFloat(element.getAttribute('data-depth')) || 0.1;
+          const depthStr = element.getAttribute('data-depth');
+          const depth = depthStr ? parseFloat(depthStr) : 0.1;
           element.style.transform = `translateZ(${20 + depth * 10}px)`;
         });
       }, 800);

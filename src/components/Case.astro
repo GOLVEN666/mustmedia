@@ -305,14 +305,16 @@ const getAllCaseStudies = () => {
     });
 
     // Filter functionality with animation
-    const filterButtons = document.querySelectorAll('.filter-btn');
-    const slides = document.querySelectorAll('.swiper-slide');
+    const filterButtons = document.querySelectorAll<HTMLButtonElement>('.filter-btn');
+    const slides = document.querySelectorAll<HTMLElement>('.swiper-slide');
     
     // Add ripple effect to buttons
     filterButtons.forEach(button => {
-        button.addEventListener('click', function(e) {
-            const x = e.clientX - e.target.getBoundingClientRect().left;
-            const y = e.clientY - e.target.getBoundingClientRect().top;
+        button.addEventListener('click', function(e: MouseEvent) {
+            const target = e.target as HTMLElement;
+            const rect = target.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
             
             const ripple = document.createElement('span');
             ripple.style.left = `${x}px`;
@@ -358,13 +360,13 @@ const getAllCaseStudies = () => {
 
     // Lazy loading images
     document.addEventListener('DOMContentLoaded', () => {
-        const lazyImages = document.querySelectorAll('img[loading="lazy"]');
+        const lazyImages = document.querySelectorAll<HTMLImageElement>('img[loading="lazy"]');
         
         if ('IntersectionObserver' in window) {
-            const imageObserver = new IntersectionObserver((entries, observer) => {
+            const imageObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        const image = entry.target;
+                        const image = entry.target as HTMLImageElement;
                         image.src = image.dataset.src || image.src;
                         image.classList.add('loaded');
                         imageObserver.unobserve(image);
@@ -377,7 +379,7 @@ const getAllCaseStudies = () => {
     });
 
     // Add hover effects to case study cards
-    const cards = document.querySelectorAll('.case-study-card');
+    const cards = document.querySelectorAll<HTMLElement>('.case-study-card');
     cards.forEach(card => {
         card.addEventListener('mouseenter', () => {
             card.style.transform = 'translateY(-8px)';
