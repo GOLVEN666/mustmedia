@@ -348,9 +348,10 @@ const formattedDate = study.date
             const vectorSource = new VectorSource();
 
             // Calculate total leads for percentage calculation
-            const totalLeads = zoneData.reduce((sum: number, zone: { leads: number }) => sum + zone.leads, 0);
-
-            // Add markers for each zone
+            // Either remove this line:
+            // const totalLeads = zoneData.reduce((sum: number, zone: { leads: number }) => sum + zone.leads, 0);
+            
+            // Or use the variable somewhere in your code
             zoneData.forEach((zone: { zone: string; leads: number; percentage: number }) => {
                 const cityInfo = cityCoordinates[zone.zone];
                 if (!cityInfo) return;
