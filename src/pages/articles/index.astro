@@ -6,7 +6,8 @@ import { getCollection } from 'astro:content';
 import type { CollectionEntry } from "astro:content";
 
 // Get page number from URL or default to 1
-const page = +Astro.url.searchParams.get('page')! || 1;
+// Either use the page variable or remove it
+// const page = +Astro.url.searchParams.get('page')! || 1;
 
 const allBlogArticles: CollectionEntry<'blog'>[] = (await getCollection('blog'))
   .sort((a:CollectionEntry<'blog'>, b:CollectionEntry<'blog'>) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());

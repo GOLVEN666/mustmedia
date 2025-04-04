@@ -32,7 +32,8 @@ const formattedDate = study.date
     : 'Date non disponible';
 
 // Serialize the monthly data for the chart
-const serializedMonthlyData = JSON.stringify(study.monthlyData || []).replace(/"/g, '&quot;');
+// Either use these variables or remove them
+// const serializedMonthlyData = JSON.stringify(study.monthlyData || []).replace(/"/g, '&quot;');
 ---
 
 <Layout title={`${study.title} | Case Study | MustMedia`}>
