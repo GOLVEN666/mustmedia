@@ -26,6 +26,20 @@ const { title } = Astro.props;
     />
 	<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
     <ViewTransitions />
+    
+    <!-- Brevo Conversations Chat Widget -->
+    <script>
+      (function(d: Document, w: Window & typeof globalThis, c: string) {
+          (w as any).BrevoConversationsID = '68151b3b93f1578fc90633cd';
+          (w[c as keyof typeof w] as any) = (w[c as keyof typeof w] as any) || function(this: any, ...args: any[]) {
+              ((w[c as keyof typeof w] as any).q = (w[c as keyof typeof w] as any).q || []).push(args);
+          };
+          var s = d.createElement('script');
+          s.async = true;
+          s.src = 'https://conversations-widget.brevo.com/brevo-conversations.js';
+          if (d.head) d.head.appendChild(s);
+      })(document, window, 'BrevoConversations');
+    </script>
   </head>
   <body class="bg-white font-SpaceGrotesk">
     <Navbar />

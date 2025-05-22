@@ -1,14 +1,31 @@
 <form
+  action="https://submit-form.com/cdp5LIqJr"
   class="bg-[#292A32] px-10 py-14 rounded-[14px] gap-5 h-full flex flex-col sm:flex-row items-center justify-center"
 >
-  <div class="w-full sm:w-[55%]">
+  <div class="w-full sm:w-[55%] flex flex-col gap-4">
     <input
       type="text"
+      id="name"
+      name="name"
+      placeholder="Name"
+      required=""
+      class="bg-transparent w-full px-[35px] py-5 border rounded-[14px] focus:outline-none"
+    />
+    <input
+      type="email"
       id="email"
       name="email"
       placeholder="Email"
+      required=""
       class="bg-transparent w-full px-[35px] py-5 border rounded-[14px] focus:outline-none"
     />
+    <textarea
+      id="message"
+      name="message"
+      placeholder="Message"
+      required=""
+      class="bg-transparent w-full px-[35px] py-5 border rounded-[14px] focus:outline-none"
+    ></textarea>
   </div>
   <button type="submit" name="submit" class="w-full sm:w-[45%] btn-tertiary"
     >Talk with us</button
