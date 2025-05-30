@@ -690,7 +690,7 @@ const formattedDate = study.date
                 func(...args);
             };
             clearTimeout(timeout);
-            timeout = setTimeout(later, wait);
+            timeout = window.setTimeout(later, wait);
         };
     }
 
