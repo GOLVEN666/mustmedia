@@ -12,10 +12,11 @@
   "dependencies": {
     "@astrojs/check": "^0.9.3",
     "@astrojs/tailwind": "^5.1.0",
-    "@astrojs/vercel": "^7.8.2",
+    "@astrojs/vercel": "^8.1.4",
+    "@microsoft/clarity": "^1.0.0",
     "@types/chart.js": "^2.9.41",
     "aos": "^2.3.4",
-    "astro": "^4.15.5",
+    "astro": "^5.8.0",
     "astro-navbar": "^2.3.3",
     "chart.js": "^4.4.8",
     "leaflet": "^1.9.4",
