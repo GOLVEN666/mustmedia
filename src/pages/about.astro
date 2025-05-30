@@ -6,42 +6,57 @@ import Team from "../components/Team.astro";
 
 <Layout title="Welcome to My site">
 	<main class="space-y-20">
-		<Container>
+        <Container>
             <div class="relative flex flex-col-reverse items-center md:flex-row" id="hero">
-                <div class="row items-center py-5 md:pb-20 md:pt-10">
-                    <div class="text-center space-y-10">
-                        <h2 class="text-5xl font-medium leading-none md:text-6xl">We Navigate the <br> digital landscape <br> for success</h2>
-                        <p class="mt-6 mb-8  text-xl font-normal leading-7 sm:mb-12">Our digital marketing agency helps businesses grow and succeed online through a range of services including SEO, PPC, social media marketing, and content creation.</p>
-                        <a class="px-9 py-5 bg-zinc-900 hover:bg-white text-white hover:text-black border rounded-2xl justify-items-center md:justify-items-start gap-2.5 inline-flex" rel="noopener noreferrer"  href="https://github.com/manulthanura/Mustmedia" target="_blank">
-                            <h2 class="text-center text-xl font-normal leading-7">Book a consultation</h2>
-                        </a>
+                <div class="row items-center py-5 md:w-6/12 md:pb-20 md:pt-10">
+                    <div class="text-left space-y-3">
+                        <h1 class="text-5xl font-medium leading-none md:text-6xl text-center md:text-left">
+                            Propulsez Votre Entreprise <br/>
+                            <span class="text-gradient">avec des Solutions</span> <br/>
+                            Marketing Innovantes
+                        </h1>
+                        <p class="mt-6 mb-8 text-xl font-normal leading-7 sm:mb-12 text-center md:text-left">Experts en marketing digital, acquisition de clients et stratégies de croissance. Nos campagnes marketing personnalisées et nos tactiques innovantes aident les entreprises à se développer rapidement et à obtenir des résultats remarquables.</p>
+                        <div class="w-full justify-center md:justify-start items-center inline-flex">
+                            <a href="https://calendly.com/maxchrf/30min" target="_blank" class="group px-8 py-5 bg-zinc-900 hover:bg-white rounded-2xl text-center text-white hover:text-black border text-xl font-normal leading-7 transition-all duration-300 transform hover:scale-105 inline-flex items-center gap-2">
+                                Réservez une consultation
+                                <svg class="w-6 h-6 transition-transform duration-300 group-hover:translate-x-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                                </svg>
+                            </a>
+                        </div>
                     </div>
+                </div>
+                <div class="flex items-center py-5 md:w-6/12 md:pb-20 md:pt-10">
+                    <img src="/sos.gif" width="100%" alt="Hero" class="rounded-3xl shadow-2xl"/>
                 </div>
             </div>
             
-            <div class="flex-row items-center">
-                <div class="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-6">
-                    <div class="p-4 grayscale transition duration-200 hover:grayscale-0">
-                        <img src="./clients/01.svg" class="h-12 w-auto mx-auto" loading="lazy" alt="client logo" width="" height="" />
+            <div class="flex-row items-center mt-16">
+                <div class="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-6 gap-8">
+                    <div class="p-4 grayscale transition duration-200 hover:grayscale-0 hover:scale-110">
+                        <img src="https://www.xn--cafkhatra-d4a.com/assets/favicon-36e5bf54.svg" class="h-12 w-auto mx-auto" loading="lazy" alt="client logo" width="" height="" />
                     </div>
-                    <div class="p-4 grayscale transition duration-200 hover:grayscale-0">
-                        <img src="./clients/02.svg" class="h-12 w-auto mx-auto" loading="lazy" alt="client logo" width="" height="" />
+                    <div class="p-4 grayscale transition duration-200 hover:grayscale-0 hover:scale-110">
+                        <img src="/clients/Group 8.svg" class="h-12 w-auto mx-auto" loading="lazy" alt="client logo" width="" height="" />
                     </div>
-                    <div class="p-4 flex grayscale transition duration-200 hover:grayscale-0">
-                        <img src="./clients/03.svg" class="h-9 w-auto m-auto" loading="lazy" alt="client logo" width="" height="" />
+                    <div class="p-4 flex grayscale transition duration-200 hover:grayscale-0 hover:scale-110">
+                        <img src="/clients/03.svg" class="h-9 w-auto m-auto" loading="lazy" alt="client logo" width="" height="" />
                     </div>
-                    <div class="p-4 grayscale transition duration-200 hover:grayscale-0">
-                        <img src="./clients/04.svg" class="h-12 w-auto mx-auto" loading="lazy" alt="client logo" width="" height="" />
+                    <div class="p-4 grayscale transition duration-200 hover:grayscale-0 hover:scale-110">
+                        <img src="/clients/meta.svg" class="h-10 w-auto mx-auto" loading="lazy" alt="client logo" width="" height="" />
                     </div>
-                    <div class="p-4 flex grayscale transition duration-200 hover:grayscale-0">
-                        <img src="./clients/05.svg" class="h-8 w-auto m-auto" loading="lazy" alt="client logo" width="" height="" />
+                    <div class="p-4 flex grayscale transition duration-200 hover:grayscale-0 hover:scale-110">
+                        <img src="https://www.marocimpact.org/wp-content/uploads/2022/03/MAROC-IMPACT-BLACK-V3-01-2048x1352.png" class="h-14 w-auto m-auto" loading="lazy" alt="client logo" width="" height="" />
                     </div>
-                    <div class="p-4 grayscale transition duration-200 hover:grayscale-0">
-                        <img src="./clients/06.svg" class="h-12 w-auto mx-auto" loading="lazy" alt="client logo" width="" height="" />
+                    <div class="p-4 grayscale transition duration-200 hover:grayscale-0 hover:scale-110">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Shopify_logo.svg/2560px-Shopify_logo.svg.png" 
+                            class="h-12 w-auto mx-auto" 
+                            loading="lazy" 
+                            alt="Shopify logo" />
                     </div>
                 </div>
             </div>
-        </Container>
+            </Container>
         <br>
         <Team/>
         <br>
