@@ -1,28 +1,73 @@
 ---
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
+import EnhancedSEO from '../components/EnhancedSEO.astro';
 import 'aos/dist/aos.css';
 
-interface Props {
+export interface Props {
   title: string;
+  description?: string;
+  canonical?: string;
+  ogImage?: string;
+  schema?: any;
+  keywords?: string;
 }
 
-const { title } = Astro.props;
+const {
+  title,
+  description = "Mustmedia est une agence de marketing digital leader à Casablanca, Maroc. Nous offrons des services de SEO, publicité en ligne, création de contenu et développement web pour booster votre croissance.",
+  canonical,
+  ogImage,
+  schema,
+  keywords
+} = Astro.props;
+
+const defaultSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Mustmedia",
+  "url": "https://www.mustmedia.ma",
+  "logo": "https://www.mustmedia.ma/images/logo.png",
+  "description": "Agence de marketing digital à Casablanca spécialisée en SEO, publicité en ligne et développement web",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Casablanca",
+    "addressRegion": "Grand Casablanca",
+    "addressCountry": "MA"
+  },
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "telephone": "+212-XXX-XXXXXX",
+    "contactType": "customer service",
+    "availableLanguage": ["French", "Arabic"]
+  },
+  "sameAs": [
+    "https://www.facebook.com/mustmedia",
+    "https://www.instagram.com/mustmedia",
+    "https://www.linkedin.com/company/mustmedia"
+  ]
+};
+
+const finalSchema = schema ? [defaultSchema, schema] : defaultSchema;
 ---
 
 <!doctype html>
-<html lang="fr">
+<html lang="fr-MA">
   <head>
     <meta charset="UTF-8" />
-    <meta name="description" content="Astro description" />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/mustmediasvg.svg" />
     <meta name="generator" content={Astro.generator} />
-    <title>{title}</title>
-    <meta
-      name="description"
-      content="A beautiful and functional landing page design created specifically for digital marketing agencies. With its clean and modern design, Mustmedia is the perfect template to showcase your agency's services and case studies to potential clients. Built with astro and tailwindcss"
+    
+    <EnhancedSEO 
+      title={title}
+      description={description}
+      canonical={canonical}
+      ogImage={ogImage}
+      schema={finalSchema}
+      keywords={keywords}
     />
+
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
     <style>
       /* Critical CSS for above-the-fold content */
@@ -46,6 +91,12 @@ const { title } = Astro.props;
         z-index: 1000;
         background: rgba(255, 255, 255, 0.95);
         backdrop-filter: blur(10px);
+      }
+      .text-gradient {
+        background: linear-gradient(135deg, #B9FF66 0%, #00D4AA 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
       }
     </style>
     <!-- Google tag (gtag.js) -->
@@ -93,11 +144,18 @@ const { title } = Astro.props;
         if (typeof BrevoConversations !== 'undefined') {
           BrevoConversations('init');
         }
-        
-        // Reinitialize any other scripts that need to be reloaded
-        // For example, if you have Swiper sliders or other components
-        // that need initialization, call their init functions here
       });
     </script>
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Mustmedia",
+      "url": "https://www.mustmedia.ma",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://www.mustmedia.ma/search?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    })} />
   </body>
 </html>

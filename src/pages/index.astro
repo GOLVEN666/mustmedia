@@ -8,17 +8,55 @@ import Case from '../components/Case.astro';
 import Testimonial from '../components/Testimonial.astro';
 import Contact from '../components/Contact.astro';
 import Process from '../components/process.astro';
+
+const homepageSchema = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "Mustmedia",
+  "image": "https://www.mustmedia.ma/images/logo.png",
+  "@id": "https://www.mustmedia.ma/#organization",
+  "url": "https://www.mustmedia.ma",
+  "telephone": "+212-0662716901",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Votre Adresse",
+    "addressLocality": "Casablanca",
+    "addressRegion": "Grand Casablanca",
+    "postalCode": "20000",
+    "addressCountry": "MA"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "33.5731",
+    "longitude": "-7.5898"
+  },
+  "openingHoursSpecification": [
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+      "opens": "09:00",
+      "closes": "18:00"
+    }
+  ],
+  "priceRange": "$$",
+  "servesCuisine": "Digital Marketing Services"
+};
 ---
 <!-- Mustmedia Official Astro theme -->
-<Layout title="Mustmedia - Digital Marketing Agency">
-	<main class="space-y-20">
-		<Hero />
-		<About />
-		<Services />
-		<Case />
-		<Process />
-		<Team />
-		<Testimonial />
-		<Contact data-aos="fade-up" />
-	</main>
+<Layout 
+  title="Mustmedia | Agence Marketing Digital Casablanca | SEO & Publicité"
+  description="Mustmedia est une agence de marketing digital leader à Casablanca, Maroc. Nous offrons des services de SEO, publicité en ligne, création de contenu et développement web pour booster votre croissance. Contactez-nous pour une stratégie personnalisée !"
+  schema={homepageSchema}
+  keywords="agence marketing digital casablanca, seo maroc, publicité en ligne, développement web casablanca, marketing digital maroc"
+>
+  <main class="space-y-20">
+    <Hero />
+    <About />
+    <Services />
+    <Case />
+    <Process />
+    <Team />
+    <Testimonial />
+    <Contact data-aos="fade-up" />
+  </main>
 </Layout>

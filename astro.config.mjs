@@ -1,11 +1,26 @@
 import { defineConfig } from 'astro/config';
+import tailwind from '@astrojs/tailwind';
 import sitemap from '@astrojs/sitemap';
 import robots from 'astro-robots-txt';
+import vercel from '@astrojs/vercel/serverless';
 
-const config = defineConfig({
+export default defineConfig({
   site: 'https://www.mustmedia.ma',
   integrations: [
-    sitemap(),
+    tailwind(),
+    sitemap({
+      customPages: [
+        'https://www.mustmedia.ma/pricing',
+        'https://www.mustmedia.ma/case-studies',
+        'https://www.mustmedia.ma/about'
+      ],
+      i18n: {
+        defaultLocale: 'fr',
+        locales: {
+          fr: 'fr-MA'
+        }
+      }
+    }),
     robots({
       policy: [
         {
@@ -17,25 +32,17 @@ const config = defineConfig({
       sitemap: 'https://www.mustmedia.ma/sitemap-index.xml'
     })
   ],
-  build: {
-    inlineStylesheets: 'auto',
-  },
   compressHTML: true,
-
-  experimental: {
-    optimizeHoistedScript: true,
-  }
-});
-import tailwind from "@astrojs/tailwind";
-
-// Import the Vercel adapter
-import vercel from '@astrojs/vercel/serverless';
-
-// https://astro.build/config
-export default defineConfig({
-  integrations: [tailwind()],
+  build: {
+    inlineStylesheets: 'auto'
+  },
+  vite: {
+    build: {
+      cssCodeSplit: false
+    }
+  },
   output: 'server',
   adapter: vercel({
     runtime: 'nodejs18.x',
-  }),
+  })
 });
