@@ -1,0 +1,65 @@
+---
+export interface Props {
+  title: string;
+  description: string;
+  keywords?: string;
+  image?: string;
+  url?: string;
+  type?: string;
+}
+
+const {
+  title,
+  description,
+  keywords = "agence marketing digital, SEO, Casablanca, Maroc, création site web",
+  image = "/images/mustmedia-og-image.jpg",
+  url = Astro.url.href,
+  type = "website"
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+---
+<title>{title}</title>
+<meta name="title" content={title} />
+<meta name="description" content={description} />
+<meta name="keywords" content={keywords} />
+<link rel="canonical" href={canonicalURL} />
+<meta property="og:type" content={type} />
+<meta property="og:url" content={url} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={image} />
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={url} />
+<meta property="twitter:title" content={title} />
+<meta property="twitter:description" content={description} />
+<meta property="twitter:image" content={image} />
+<meta name="robots" content="index, follow" />
+<meta name="author" content="Mustmedia" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Mustmedia",
+  "url": "https://www.mustmedia.ma",
+  "logo": "https://www.mustmedia.ma/images/logo.png",
+  "description": "Agence de marketing digital spécialisée en acquisition de clients et stratégies de croissance à Casablanca, Maroc",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Casablanca",
+    "addressCountry": "MA"
+  },
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "contactType": "customer service",
+    "availableLanguage": ["French", "Arabic"]
+  },
+  "sameAs": [
+    "https://www.linkedin.com/company/mustmedia",
+    "https://www.facebook.com/mustmedia",
+    "https://www.instagram.com/mustmedia"
+  ]
+}
+</script>

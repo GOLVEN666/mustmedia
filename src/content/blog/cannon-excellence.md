@@ -1,5 +1,7 @@
 ---
 title: "Capturing Life's Moments with Canon Excellence"
+description: "Explore how Canon's innovative cameras, lenses, and imaging solutions empower photographers to capture life's most precious moments with excellence."
+tags: ["Canon", "Photography", "Cameras", "Innovation", "Technology"]
 pubDate: 2024-01-15
 author: 'Abdelghafour naim'
 authImage: 'https://media.licdn.com/dms/image/v2/D4D03AQHFX24pS1PrHQ/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1727379800765?e=1738800000&v=beta&t=a1MNDDQzZ9qyM_mZir529XyK7TPDUPh4MmD_S9_HEhg'
