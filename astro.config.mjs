@@ -2,7 +2,7 @@ import { defineConfig } from 'astro/config';
 import tailwind from '@astrojs/tailwind';
 import sitemap from '@astrojs/sitemap';
 import robots from 'astro-robots-txt';
-import vercel from '@astrojs/vercel/serverless';
+import vercel from '@astrojs/vercel';
 
 export default defineConfig({
   site: 'https://www.mustmedia.ma',
@@ -43,6 +43,6 @@ export default defineConfig({
   },
   output: 'server',
   adapter: vercel({
-    runtime: 'nodejs18.x',
+    runtime: 'nodejs20.x',
   })
 });
